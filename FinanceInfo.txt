@@ -1,0 +1,38 @@
+Date: (mmddyy)
+Cost:
+Location To: (PNC Grow, CVS, Midnight Oil, etc )
+Type: (Transfer, work, Fashion, rent, fun, etc)
+OPTIONAL Location From: (PNC grow, PNC saving, investments, etc) ONLY USED FOR TRANSFERS
+Description: (nail polish, T-Shirt, concert tickets, etc)
+
+05 11 26
+11
+start
+work
+Starting Stuff
+
+05 01 26
+823.63
+Pitt Job
+work
+NA
+
+05 01 26
+658.9
+PNC grow
+Transfer
+pnc spending
+NA
+
+05 07 26
+American Red Cross
+-143
+ProfessionalExpense
+CPR certification
+
+05 08 26
+5
+Parking
+May 06 2026 job fair LancasterCity parking
+
+

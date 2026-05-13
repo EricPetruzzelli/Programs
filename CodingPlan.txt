@@ -1,0 +1,25 @@
+PLAN:
+
+BASIC DETAILS:
+Want to return details for everything. dates, types, locations, all of it
+Also want to keep track of totals n stuff
+IMPLEMENTATION:
+Hashmap would be good for storing types
+Array would be good for storing dates (3d array mmddyy)
+
+
+
+STUFF TO ADD:
+Remove spaces and make all capitilized.
+Remove blank lines
+skip first X amount of lines
+Use hash table for TYPE
+    Might need a hashtable for TO, FROM, and other stuff too
+Use graph (maybe?)
+Use array or arraylist for dates
+
+Maybe only include FROM for transfers? Since it would be kinda useless otherwise. can just have that info be in the type
+
+abs val stuff before inputting
+
+Make a table
