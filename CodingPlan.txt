@@ -1,5 +1,7 @@
 PLAN:
 
+
+
 BASIC DETAILS:
 Want to return details for everything. dates, types, locations, all of it
 Also want to keep track of totals n stuff

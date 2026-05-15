@@ -1,38 +1,43 @@
+8 <- amount to skip
 Date: (mmddyy)
 Cost:
-Location To: (PNC Grow, CVS, Midnight Oil, etc )
+Type Origin: (CVS, Midnight Oil, etc )
 Type: (Transfer, work, Fashion, rent, fun, etc)
-OPTIONAL Location From: (PNC grow, PNC saving, investments, etc) ONLY USED FOR TRANSFERS
+Actual Location or Transfer To: (' for automatically set??)
 Description: (nail polish, T-Shirt, concert tickets, etc)
 
 05 11 26
 11
 start
 work
+PNC spend 
 Starting Stuff
 
 05 01 26
 823.63
 Pitt Job
 work
+PNC spend 
 NA
 
 05 01 26
 658.9
 PNC grow
 Transfer
-pnc spending
+PNC spend 
 NA
 
 05 07 26
 American Red Cross
 -143
 ProfessionalExpense
+PNC spend 
 CPR certification
 
 05 08 26
-5
-Parking
+-5
+ProfessionalExpense
+PNC spend 
 May 06 2026 job fair LancasterCity parking
 
 
