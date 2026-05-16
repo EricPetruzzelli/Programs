@@ -30,11 +30,15 @@ public class FinanceMain
         {
             System.out.println("\n\nCHOOSE AN OPTION");
             System.out.println("1. PRINT TYPES");
+            System.out.println("2. GET AMOUNT OF MONEY IN A LOCATION");
             System.out.println("0. END PROGRAM");
             Scanner scanner = new Scanner(System.in);
             switch (scanner.nextInt()) {
                 case 1:
                     printHashMap(TypeMap);
+                    break;
+                case 2:
+                    getAmountInLocation(LocationMap,scanner.next());
                     break;
                 case 0:
                     System.out.println("ENDING PROGRAM");
@@ -47,6 +51,16 @@ public class FinanceMain
 
     }
 
+    static double getAmountInLocation(Map<String, SortedSet<Transaction>> map, String key)
+    {
+        double total=0;
+        Iterator<Transaction> list = map.get(key).iterator();
+        while(list.hasNext())
+        {
+            total=total + list.next().cost;
+        }
+        return total;
+    }
     static void printHashMap(Map<String, SortedSet<Transaction>> map)
     {
         Iterator<Transaction> curList;
