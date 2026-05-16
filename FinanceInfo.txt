@@ -1,16 +1,16 @@
 8 <- amount to skip
 Date: (mmddyy)
 Cost:
-Type Origin: (CVS, Midnight Oil, etc )
+Place Origin: (CVS, Midnight Oil, etc )
 Type: (Transfer, work, Fashion, rent, fun, etc)
 Actual Location or Transfer To: (' for automatically set??)
 Description: (nail polish, T-Shirt, concert tickets, etc)
 
-05 11 26
+5 11 26
 11
 start
 work
-PNC spend 
+PNC spend
 Starting Stuff
 
 05 01 26
@@ -28,16 +28,15 @@ PNC spend
 NA
 
 05 07 26
-American Red Cross
 -143
+American Red Cross
 ProfessionalExpense
 PNC spend 
 CPR certification
 
 05 08 26
 -5
+Parking
 ProfessionalExpense
 PNC spend 
-May 06 2026 job fair LancasterCity parking
-
-
+May 06 2026 job fair LancasterCity
