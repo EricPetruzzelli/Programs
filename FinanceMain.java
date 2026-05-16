@@ -1,10 +1,10 @@
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Set;
 
 public class FinanceMain 
 {
@@ -17,15 +17,53 @@ public class FinanceMain
     final public static String INFO_FILE_NAME="FinanceInfo.txt";
     //debuggers
     static boolean debug=true;
-    static boolean debugDetail=false;
+    static boolean debugDetail=true;
     public static void main(String[] args) 
     {
         if(debug)
-            System.out.println("DEBUG ON \n STARTING MAIN");
+            System.err.println("DEBUG ON \n STARTING MAIN");
 
         ReadInfo(INFO_FILE_NAME);
-    
 
+
+        while(true)
+        {
+            System.out.println("\n\nCHOOSE AN OPTION");
+            System.out.println("1. PRINT TYPES");
+            System.out.println("0. END PROGRAM");
+            Scanner scanner = new Scanner(System.in);
+            switch (scanner.nextInt()) {
+                case 1:
+                    printHashMap(TypeMap);
+                    break;
+                case 0:
+                    System.out.println("ENDING PROGRAM");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("ENTER VALID INPUT");
+            }
+        }
+
+    }
+
+    static void printHashMap(Map<String, SortedSet<Transaction>> map)
+    {
+        Iterator<Transaction> curList;
+        String curKey;
+        if(debug)
+            System.err.println("PRINTING A HASHMAP");
+        Iterator<String> keyIterator= new TreeSet<String>(map.keySet()).iterator(); //Tree Set sorts the set
+        while(keyIterator.hasNext())
+        {
+            curKey=keyIterator.next();
+            System.out.print("\n"+curKey+":\n");
+            curList = map.get(curKey).iterator();//ERROR HERE
+            while(curList.hasNext())
+            {
+                System.out.println(curList.next()+"\n");
+            }
+        }
     }
 
     static void ReadInfo(String fileName)
@@ -99,6 +137,7 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
         {
             map.put(key,new TreeSet<Transaction>());
         }
+        
         map.get(key).add(value);
     }
 

@@ -38,7 +38,7 @@ public class Transaction implements Comparable<Transaction>
             {
                 if(date[0]==other.date[0])
                 {
-                    return 0;
+                    return -1;
                 }
                 else
                     index=0;
