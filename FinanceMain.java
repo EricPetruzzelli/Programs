@@ -133,14 +133,16 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             curOcDate[2]= nextLineScanner.nextInt();
             if(nextLineScanner.hasNextInt())
             {
-                curDate[0]= nextLineScanner.nextInt();
+                curDate[0]= nextLineScanner.nextInt(); 
                 curDate[1]=nextLineScanner.nextInt();
                 curDate[2]= nextLineScanner.nextInt();
+                
             }
             else 
             {
-                curDate=curOcDate;
+                curDate=curOcDate.clone();
             }
+            
                 
 
             curCost=scanner.nextDouble(); 
@@ -149,7 +151,6 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             curType=scanner.nextLine();
             curActualLocation=scanner.nextLine();
             curDescription= scanner.nextLine();
-
            curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, curType, curActualLocation, curDescription);
            if(debugDetail)
            {
