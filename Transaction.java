@@ -1,13 +1,15 @@
 public class Transaction implements Comparable<Transaction>
 {
     public int[] date= new int[3];
+    public int[] OcDate= new int[3];
     public double cost;
     public String typeOrigin;
     public String type;
     public String location;
     public String description;
-    public Transaction(int[] date, double cost, String typeOrigin, String type, String location, String description)
+    public Transaction(int[] OcDate,int[] date, double cost, String typeOrigin, String type, String location, String description)
     {
+        this.OcDate=OcDate;
         this.date=date;
         this.cost=cost;
         this.type=type;
@@ -18,13 +20,13 @@ public class Transaction implements Comparable<Transaction>
     @Override
     public String toString()
     {
-        return printDate() +"\n"+cost+"\n"+typeOrigin+"\n"+type+"\n"+location+"\n"+description;
+        return printDate(OcDate) +"\n"+printDate(date) +"\n"+cost+"\n"+typeOrigin+"\n"+type+"\n"+location+"\n"+description;
     }
-    private String printDate()
+    private String printDate(int[] arg)
     {
         String str="";
-        for(int i=0; i<date.length;i++)
-            str=str+date[i]+" ";
+        for(int i=0; i<arg.length;i++)
+            str=str+arg[i]+" ";
         return str;
     }
 
@@ -32,11 +34,11 @@ public class Transaction implements Comparable<Transaction>
     public int compareTo(Transaction other)
     {
         int index=0;
-        if(date[2]==other.date[2])
+        if(OcDate[2]==other.OcDate[2])
         {
-            if(date[1]==other.date[1])
+            if(OcDate[1]==other.OcDate[1])
             {
-                if(date[0]==other.date[0])
+                if(OcDate[0]==other.OcDate[0])
                 {
                     return -1;
                 }
@@ -50,6 +52,6 @@ public class Transaction implements Comparable<Transaction>
         {
             index=2;
         }
-        return date[index]-other.date[index];
+        return OcDate[index]-other.OcDate[index];
     }
 }

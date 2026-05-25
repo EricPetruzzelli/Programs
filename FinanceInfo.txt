@@ -1,21 +1,21 @@
 8 <- amount to skip
-Date: (mmddyy)
+Date occured   Date actual: (mmddyy) 00 00 0000 means unkown OR not occured (i.e. most common types)
 Cost:
 Place Origin: (CVS, Midnight Oil, etc )
-Type: (Transfer, work, Fashion, rent, fun, etc)
+Tags: Main tag followed by sub-tags(Transfer, work, Fashion, rent, fun, etc)
 Actual Location or Transfer To: (' for automatically set??)
 Description: (nail polish, T-Shirt, concert tickets, etc)
 
-5 11 26
+5 11 26 
 11
 start
 work
 PNC spend
 Starting Stuff
 
-05 01 26
+05 01 26 
 823.63
-Pitt Job
+Pitt
 work
 PNC spend 
 NA
@@ -25,18 +25,173 @@ NA
 PNC grow
 Transfer
 PNC spend 
-NA
+change this later cuz i never actually transfered it
 
 05 07 26
 -143
 American Red Cross
 ProfessionalExpense
 PNC spend 
-CPR certification
+CPR certification. May be innacurate occurance date
 
-05 08 26
+05 06 26 05 08 26
 -5
-Parking
+LancasterCity
 ProfessionalExpense
 PNC spend 
 May 06 2026 job fair LancasterCity
+
+05 12 26
+-15.89
+Amazon
+Subscription
+PNC spend
+UNKNOWN! NEED TO CANCEL!!
+
+05 11 26 05 12 26 
+-5.29
+Staples
+ProfessionalExpense
+PNC spend
+Notebook for personal finance notes
+
+05 12 26
+-7.63
+Midnight Oil
+Restaurant
+PNC spend
+may be innacurate occurance date
+
+05 12 26 05 13 26
+-18.59
+Tellus 360
+Entertainment
+PNC spend
+Emo concert at Tellus
+
+05 14 26 05 15 26
+-7.63
+Midnight Oil
+Restaurant
+PNC spend
+may be innacurate occurance date
+
+05 14 26 05 15 26
+-7.63
+Midnight Oil
+Restaurant
+PNC spend
+may be innacurate occurance date
+
+05 15 26
+45.98
+Pitt
+work
+PNC spend
+Kinda random, so just gonna put it all in savings budget
+
+05 18 26
+-15
+Unkown
+Unkown
+PNC spend
+"PF Lancaster Lit IClub Fees ach debit PRx5201" idk what this is
+
+05 17 26 05 18 26
+-11.45
+Cashapp
+junk
+PNC spend
+NA
+
+05 16 26 05 18 26
+-8
+Phantom Power
+Restaurant
+PNC spend
+Beer
+
+05 16 26 05 18 26
+-20
+Phantom Power
+Entertainment Concert
+PNC spend
+metal concert
+
+05 15 26 05 18 26
+-7
+Midnight Oil
+ProfessionalExpense Restaurant
+PNC spend
+may be innacurate occurance date
+
+
+05 18 26 05 19 26
+-20.43
+Subway
+ProfessionalExpense Restaurant
+PNC spend
+At Harrisburg Airport during trip delay
+
+05 18 26 05 19 26
+-3.07
+Subway
+ProfessionalExpense Restaurant
+PNC spend
+At Harrisburg Airport during trip delay
+
+05 18 26 05 19 26
+-20.84
+Subway
+ProfessionalExpense Restaurant
+PNC spend
+At Harrisburg Airport during trip delay
+
+05 20 26
+39
+transfer
+PNC spend
+Cash
+ATM at SEISMIC
+
+05 19 26
+-26.49
+Staples
+ProfessionalExpense
+PNC spend
+Pitt Business Cards at Ann Harbor Jacksonville store
+
+05 20 26
+-4.15
+Ann Harbor
+ProfessionalExpense 
+PNC spend
+Vending Machine idk what. May be innacurate occurance date
+
+05 20 26
+-23.31
+Staples
+ProfessionalExpense
+PNC spend
+Business Cards. May be innacurate occurance date
+
+05 20 26 05 21 26
+-10.61
+Ann Harbor Creamery
+Entertainment Restaurant
+PNC spend
+Ice cream :)
+
+05 20 26 05 21 26
+-14.32
+Jerusalem Garden
+ProfessionalExpense Restaurant
+PNC spend
+Meal with undergrads! REALLY GOOD
+
+05 19 26 05 21 26
+-1.5
+Masabi
+ProfessionalExpense transportation
+PNC spend
+Michigan Bus to staples

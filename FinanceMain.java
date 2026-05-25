@@ -82,6 +82,7 @@ public class FinanceMain
 
     static void ReadInfo(String fileName)
     {
+        int[] curOcDate=new int[3];
         int[] curDate=new int[3];
         Double curCost;
         String curOrigin;
@@ -113,21 +114,43 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             scanner.nextLine();
         
         
+        /*reads through the file in this order
+        line read for date(s)
 
+        */
         while(scanner.hasNextInt())
         {
-           curDate[0]= scanner.nextInt();
-           curDate[1]=scanner.nextInt();
-           curDate[2]= scanner.nextInt();
+            //scans line for date(s)
 
-            curCost=scanner.nextDouble(); //ERROR HERE
+            String nextLine=scanner.nextLine();
+            while(nextLine.equals(""))
+            {
+                nextLine=scanner.nextLine();
+            }
+            Scanner nextLineScanner = new Scanner(nextLine);
+            curOcDate[0]= nextLineScanner.nextInt();//error here?
+            curOcDate[1]=nextLineScanner.nextInt();
+            curOcDate[2]= nextLineScanner.nextInt();
+            if(nextLineScanner.hasNextInt())
+            {
+                curDate[0]= nextLineScanner.nextInt();
+                curDate[1]=nextLineScanner.nextInt();
+                curDate[2]= nextLineScanner.nextInt();
+            }
+            else 
+            {
+                curDate=curOcDate;
+            }
+                
+
+            curCost=scanner.nextDouble(); 
             scanner.nextLine();
             curOrigin=scanner.nextLine();
             curType=scanner.nextLine();
             curActualLocation=scanner.nextLine();
             curDescription= scanner.nextLine();
 
-           curTransaction=new Transaction(curDate, curCost, curOrigin, curType, curActualLocation, curDescription);
+           curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, curType, curActualLocation, curDescription);
            if(debugDetail)
            {
             System.err.println(curTransaction+"\n");
