@@ -5,13 +5,22 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.ArrayList;
 
 public class FinanceMain 
 {
     //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
-     static Map<String, SortedSet<Transaction>> TypeMap=new HashMap<>();
+    static Map<String, SortedSet<Transaction>> MainTagMap=new HashMap<>();
+     static Map<String, SortedSet<Transaction>> TagMap=new HashMap<>();
      static Map<String, SortedSet<Transaction>> LocationMap=new HashMap<>();
      static Map<String, SortedSet<Transaction>> OriginMap=new HashMap<>();
+
+
+     static TransactionCalander OccuranceCal;
+     static TransactionCalander LocationCal;
+
+     static double totalAmount;
+     
 
 
     final public static String INFO_FILE_NAME="FinanceInfo.txt";
@@ -35,7 +44,7 @@ public class FinanceMain
             Scanner scanner = new Scanner(System.in);
             switch (scanner.nextInt()) {
                 case 1:
-                    printHashMap(TypeMap);
+                    printHashMap(TagMap);
                     break;
                 case 2:
                     getAmountInLocation(LocationMap,scanner.next());
@@ -86,7 +95,7 @@ public class FinanceMain
         int[] curDate=new int[3];
         Double curCost;
         String curOrigin;
-        String curType;
+        ArrayList<String> tags;
         String curActualLocation;
         String curDescription; 
 
@@ -128,14 +137,15 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
                 nextLine=scanner.nextLine();
             }
             Scanner nextLineScanner = new Scanner(nextLine);
-            curOcDate[0]= nextLineScanner.nextInt();//error here?
-            curOcDate[1]=nextLineScanner.nextInt();
-            curOcDate[2]= nextLineScanner.nextInt();
+            //year month day format, so different than input format
+            curOcDate[1]= nextLineScanner.nextInt();
+            curOcDate[2]=nextLineScanner.nextInt();
+            curOcDate[0]= nextLineScanner.nextInt();
             if(nextLineScanner.hasNextInt())
             {
-                curDate[0]= nextLineScanner.nextInt(); 
-                curDate[1]=nextLineScanner.nextInt();
-                curDate[2]= nextLineScanner.nextInt();
+                curDate[1]= nextLineScanner.nextInt(); 
+                curDate[2]=nextLineScanner.nextInt();
+                curDate[0]= nextLineScanner.nextInt();
                 
             }
             else 
@@ -148,19 +158,35 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             curCost=scanner.nextDouble(); 
             scanner.nextLine();
             curOrigin=scanner.nextLine();
-            curType=scanner.nextLine();
+
+
+            tags=new ArrayList<>();
+            nextLine=scanner.nextLine();
+            nextLineScanner = new Scanner(nextLine);
+            while(nextLineScanner.hasNext())
+            {
+                tags.add(nextLineScanner.next());
+            }
+
+            
+
+
+
             curActualLocation=scanner.nextLine();
             curDescription= scanner.nextLine();
-           curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, curType, curActualLocation, curDescription);
+           curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription);
            if(debugDetail)
            {
             System.err.println(curTransaction+"\n");
            }
-            mapPut(TypeMap, curType, curTransaction);
+            mapPut(MainTagMap, tags.getFirst(), curTransaction);
+            for(String tag:tags)
+            {
+                mapPut(TagMap, tag, curTransaction);
+            }
             mapPut(LocationMap, curActualLocation, curTransaction);
             mapPut(OriginMap, curOrigin, curTransaction);
         }
-
 
 
         if(debug)
@@ -179,4 +205,52 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
         map.get(key).add(value);
     }
 
+    private class TransactionCalander
+    {
+        //each date will be an arraylist of arraylists of arraylists of sets (YY/MM/DD)
+        ArrayList<ArrayList<ArrayList<TreeSet<Transaction>>>> calander;
+        boolean useOcDate;
+        int startingYear=Integer.MAX_VALUE;
+        
+        //uses several arraylists in succession. If space or initial runtime become an issue, could turn this into a tree instead
+        public TransactionCalander(boolean useOcDate)
+        {
+            calander=new ArrayList<>();
+            this.useOcDate=useOcDate;
+        }
+        //date is month day year
+        public void addTransaction(Transaction transaction)
+        {//year month day format
+            int[] date;
+            if(useOcDate)
+                date=transaction.OcDate.clone();
+            else
+                date=transaction.date.clone();
+
+            date[1]=date[1]-1;
+            date[2]=date[2]-1; //reduce by one so fits into 12 system (so january is 00)
+
+            if(startingYear>date[0])
+            {
+                startingYear = date[0];
+                //need to shift everything up
+                for(int index=calander.size()-1;index>=0;index--)
+                {
+                    calander.set(index+1, calander.get(index));
+                }
+            }
+
+            //first, need to find the year
+            //maybe assume it goes year to year? could be issues with this later, but that is future me's problem
+            int yearIndex = date[0]-startingYear;
+            if(calander.get(yearIndex)==null)
+                calander.set(yearIndex,new ArrayList<ArrayList<TreeSet<Transaction>>>(12));
+            if(calander.get(yearIndex).get(date[1])==null)
+                calander.get(yearIndex).set(date[1], new ArrayList<TreeSet<Transaction>>(31));
+            if(calander.get(yearIndex).get(date[1]).get(date[2])==null)
+                calander.get(yearIndex).get(date[1]).set(date[2],new TreeSet<Transaction>());
+
+            calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);
+        }
+    }
 }
