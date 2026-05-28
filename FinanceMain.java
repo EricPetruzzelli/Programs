@@ -40,15 +40,17 @@ public class FinanceMain //moneyOrganizer
         {
             System.out.println("\n\nCHOOSE AN OPTION");
             System.out.println("1. PRINT ALL TRANSACTIONS");
+            System.out.println("2. PRINT TOTAL AMOUNT");
             System.out.println("0. END PROGRAM");
             Scanner scanner = new Scanner(System.in);
-            switch (scanner.nextInt()) {
-                case 1:
+            switch (scanner.next()) {
+                case "1":
                     System.out.print(moneyOrganizer.stringOfTransactions());
                     break;
-                case 2:
+                case "2":
+                    System.out.print("Total amount is $"+moneyOrganizer.totalAmount());
                     break;
-                case 0:
+                case "3":
                     System.out.println("ENDING PROGRAM");
                     System.exit(0);
                     break;
