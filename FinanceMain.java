@@ -41,6 +41,7 @@ public class FinanceMain //moneyOrganizer
             System.out.println("\n\nCHOOSE AN OPTION");
             System.out.println("1. PRINT ALL TRANSACTIONS");
             System.out.println("2. PRINT TOTAL AMOUNT");
+            System.out.println("3. PRINT TAGS");
             System.out.println("0. END PROGRAM");
             Scanner scanner = new Scanner(System.in);
             switch (scanner.next()) {
@@ -51,6 +52,12 @@ public class FinanceMain //moneyOrganizer
                     System.out.print("Total amount is $"+moneyOrganizer.totalAmount());
                     break;
                 case "3":
+                    System.out.print("\nPRINTING TAGS\n");
+                    Set<String> tags = moneyOrganizer.getTags();
+                    for(String tag: tags)
+                        System.out.println(tag);
+                    break;
+                case "0":
                     System.out.println("ENDING PROGRAM");
                     System.exit(0);
                     break;

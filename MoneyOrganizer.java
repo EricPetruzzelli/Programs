@@ -1,7 +1,5 @@
-//overarching class for budget and location
-
+import java.util.HashSet;
 import java.util.Set;
-
 public class MoneyOrganizer 
 {
     final private Set<Transaction> theSet;
@@ -31,6 +29,18 @@ public class MoneyOrganizer
         }
         return output;
     }
+    public Set<String> getTags()
+    {
+        Set<String> output = new HashSet<>();
 
-    
+        for(Transaction transaction: theSet)
+        {
+            for(String tag: transaction.tags)
+            {
+                output.add(tag);
+            }
+        }
+        return output;
+    }
+
 }
