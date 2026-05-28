@@ -20,13 +20,6 @@ work
 PNC spend 
 NA
 
-05 01 26
-658.9
-PNC grow
-Transfer
-PNC spend 
-change this later cuz i never actually transfered it
-
 05 07 26
 -143
 American Red Cross
@@ -195,3 +188,19 @@ Masabi
 ProfessionalExpense transportation
 PNC spend
 Michigan Bus to staples
+
+05 26 26
+-44.05
+CVS
+Hygene
+PNC spend
+2x Dove Volume Dry Shampoo (large), 2x Deep Clean Action Facial Cleanser
+
+05 26 26
+-7.41
+Staples
+ProfessionalExpense LearningSupplies
+PNC spend
+g2 colored pens 
+
+

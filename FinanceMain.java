@@ -6,8 +6,9 @@ import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
-public class FinanceMain 
+public class FinanceMain //MainTagMap TagMap LocationMap OriginMap
 {
     //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
     static Map<String, SortedSet<Transaction>> MainTagMap=new HashMap<>();
@@ -15,9 +16,12 @@ public class FinanceMain
      static Map<String, SortedSet<Transaction>> LocationMap=new HashMap<>();
      static Map<String, SortedSet<Transaction>> OriginMap=new HashMap<>();
 
+     static int YEARSTART=26;
+     static int YEAREND=27;
 
-     static TransactionCalander OccuranceCal;
-     static TransactionCalander LocationCal;
+
+     static TransactionCalander OccuranceCal=new TransactionCalander(true);
+     static TransactionCalander LocationCal=new TransactionCalander(false);
 
      static double totalAmount;
      
@@ -26,7 +30,7 @@ public class FinanceMain
     final public static String INFO_FILE_NAME="FinanceInfo.txt";
     //debuggers
     static boolean debug=true;
-    static boolean debugDetail=true;
+    static boolean debugDetail=false;
     public static void main(String[] args) 
     {
         if(debug)
@@ -186,6 +190,8 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             }
             mapPut(LocationMap, curActualLocation, curTransaction);
             mapPut(OriginMap, curOrigin, curTransaction);
+            OccuranceCal.addTransaction(curTransaction);
+            LocationCal.addTransaction(curTransaction);
         }
 
 
@@ -205,21 +211,34 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
         map.get(key).add(value);
     }
 
-    private class TransactionCalander
+    private static class TransactionCalander
     {
         //each date will be an arraylist of arraylists of arraylists of sets (YY/MM/DD)
-        ArrayList<ArrayList<ArrayList<TreeSet<Transaction>>>> calander;
-        boolean useOcDate;
-        int startingYear=Integer.MAX_VALUE;
-        
+        static LinkedList<LinkedList<LinkedList<TreeSet<Transaction>>>> calander;
+        static boolean useOcDate;        
         //uses several arraylists in succession. If space or initial runtime become an issue, could turn this into a tree instead
         public TransactionCalander(boolean useOcDate)
         {
-            calander=new ArrayList<>();
+            calander=new LinkedList<>();
+
+            for(int yearIndex=0; yearIndex< YEAREND-YEARSTART+1;yearIndex++)
+            {
+                calander.add(new LinkedList<>());
+                for(int monthIndex=0; monthIndex<12;monthIndex++)
+                {
+                    calander.get(yearIndex).add(new LinkedList<>());
+                    for(int dayIndex=0;dayIndex<31;dayIndex++)
+                        calander.get(yearIndex).get(monthIndex).add(new TreeSet<>());
+                }
+            }
+
+
+
+
             this.useOcDate=useOcDate;
         }
         //date is month day year
-        public void addTransaction(Transaction transaction)
+        public static void addTransaction(Transaction transaction)
         {//year month day format
             int[] date;
             if(useOcDate)
@@ -229,28 +248,12 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
 
             date[1]=date[1]-1;
             date[2]=date[2]-1; //reduce by one so fits into 12 system (so january is 00)
-
-            if(startingYear>date[0])
-            {
-                startingYear = date[0];
-                //need to shift everything up
-                for(int index=calander.size()-1;index>=0;index--)
-                {
-                    calander.set(index+1, calander.get(index));
-                }
-            }
-
-            //first, need to find the year
-            //maybe assume it goes year to year? could be issues with this later, but that is future me's problem
-            int yearIndex = date[0]-startingYear;
-            if(calander.get(yearIndex)==null)
-                calander.set(yearIndex,new ArrayList<ArrayList<TreeSet<Transaction>>>(12));
-            if(calander.get(yearIndex).get(date[1])==null)
-                calander.get(yearIndex).set(date[1], new ArrayList<TreeSet<Transaction>>(31));
-            if(calander.get(yearIndex).get(date[1]).get(date[2])==null)
-                calander.get(yearIndex).get(date[1]).set(date[2],new TreeSet<Transaction>());
-
+            int yearIndex = date[0]-YEARSTART;
             calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);
+
+
+
+
         }
     }
 }
