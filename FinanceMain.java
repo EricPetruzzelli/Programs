@@ -1,5 +1,6 @@
 import java.io.File;
-import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
@@ -8,18 +9,14 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class FinanceMain //MainTagMap TagMap LocationMap OriginMap
+public class FinanceMain //moneyOrganizer
 {
     //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
-    static Map<String, SortedSet<Transaction>> MainTagMap=new HashMap<>();
-     static Map<String, SortedSet<Transaction>> TagMap=new HashMap<>();
-     static Map<String, SortedSet<Transaction>> LocationMap=new HashMap<>();
-     static Map<String, SortedSet<Transaction>> OriginMap=new HashMap<>();
 
      static int YEARSTART=26;
      static int YEAREND=27;
 
-
+     static MoneyOrganizer moneyOrganizer;
      static TransactionCalander OccuranceCal=new TransactionCalander(true);
      static TransactionCalander LocationCal=new TransactionCalander(false);
 
@@ -42,16 +39,14 @@ public class FinanceMain //MainTagMap TagMap LocationMap OriginMap
         while(true)
         {
             System.out.println("\n\nCHOOSE AN OPTION");
-            System.out.println("1. PRINT TYPES");
-            System.out.println("2. GET AMOUNT OF MONEY IN A LOCATION");
+            System.out.println("1. PRINT ALL TRANSACTIONS");
             System.out.println("0. END PROGRAM");
             Scanner scanner = new Scanner(System.in);
             switch (scanner.nextInt()) {
                 case 1:
-                    printHashMap(TagMap);
+                    System.out.print(moneyOrganizer.stringOfTransactions());
                     break;
                 case 2:
-                    getAmountInLocation(LocationMap,scanner.next());
                     break;
                 case 0:
                     System.out.println("ENDING PROGRAM");
@@ -95,6 +90,7 @@ public class FinanceMain //MainTagMap TagMap LocationMap OriginMap
 
     static void ReadInfo(String fileName)
     {
+        Set<Transaction> transactionSet = new HashSet<Transaction>();
         int[] curOcDate=new int[3];
         int[] curDate=new int[3];
         Double curCost;
@@ -183,32 +179,15 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
            {
             System.err.println(curTransaction+"\n");
            }
-            mapPut(MainTagMap, tags.getFirst(), curTransaction);
-            for(String tag:tags)
-            {
-                mapPut(TagMap, tag, curTransaction);
-            }
-            mapPut(LocationMap, curActualLocation, curTransaction);
-            mapPut(OriginMap, curOrigin, curTransaction);
+            transactionSet.add(curTransaction);
             OccuranceCal.addTransaction(curTransaction);
             LocationCal.addTransaction(curTransaction);
         }
 
-
+        moneyOrganizer=new MoneyOrganizer(transactionSet);
         if(debug)
             System.out.println("COMPLETED READINFO");
         scanner.close();
-    }
-
-    public static void mapPut(Map<String, SortedSet<Transaction>> map, String key, Transaction value)
-    {
-
-        if(map.get(key)==null)
-        {
-            map.put(key,new TreeSet<Transaction>());
-        }
-        
-        map.get(key).add(value);
     }
 
     private static class TransactionCalander
