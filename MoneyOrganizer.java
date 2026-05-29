@@ -17,6 +17,25 @@ public class MoneyOrganizer
         }
         return output.substring(0,output.length()-2);
     }
+    private String stringOfTransactions(Set<Transaction> transactions)
+    {
+        String output="";
+        for(Transaction transaction: transactions)
+        {
+            output=output+transaction+"\n\n";
+        }
+        return output.substring(0,output.length()-2);
+    }
+    private Set<Transaction> getTransactionsFromTag(String tag)
+    {
+        Set<Transaction> output =new HashSet<>();
+        for(Transaction transaction: theSet)
+        {
+            if(transaction.tags.contains(tag))
+                output.add(transaction);
+        }
+        return output;
+    }
     public double totalAmount()
     {
         double output=0;

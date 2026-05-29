@@ -42,6 +42,7 @@ public class FinanceMain //moneyOrganizer
             System.out.println("1. PRINT ALL TRANSACTIONS");
             System.out.println("2. PRINT TOTAL AMOUNT");
             System.out.println("3. PRINT TAGS");
+            System.out.println("4. GET TOTAL FROM TAG (WIP)");
             System.out.println("0. END PROGRAM");
             Scanner scanner = new Scanner(System.in);
             switch (scanner.next()) {
