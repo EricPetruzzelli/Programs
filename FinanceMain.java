@@ -42,7 +42,8 @@ public class FinanceMain //moneyOrganizer
             System.out.println("1. PRINT ALL TRANSACTIONS");
             System.out.println("2. PRINT TOTAL AMOUNT");
             System.out.println("3. PRINT TAGS");
-            System.out.println("4. GET TOTAL FROM TAG (WIP)");
+            System.out.println("4. GET TOTAL FROM TAG");
+            System.out.println("5. GET TOTAL IN LOCATION");
             System.out.println("0. END PROGRAM");
             Scanner scanner = new Scanner(System.in);
             switch (scanner.next()) {
@@ -57,6 +58,28 @@ public class FinanceMain //moneyOrganizer
                     Set<String> tags = moneyOrganizer.getTags();
                     for(String tag: tags)
                         System.out.println(tag);
+                    break;
+                case "4":
+                    System.out.println("Tag?");
+                    String tag = scanner.next();
+                    if(!moneyOrganizer.getTags().contains(tag))
+                    {
+                        System.out.print("TAG NOT IN ORGANIZER");
+                        break;
+                    }
+                    
+                    System.out.print("Total in "+tag+" is "+moneyOrganizer.getTotalFromTag(tag));
+                    break;
+                    case "5":
+                    System.out.println("Tag?");
+                    String location = scanner.next();
+                    if(!moneyOrganizer.getLocations().contains(location))
+                    {
+                        System.out.print("LOCATION NOT IN ORGANIZER");
+                        break;
+                    }
+                    
+                    System.out.print("Total in "+location+" is "+moneyOrganizer.getTotalInLocation(location));
                     break;
                 case "0":
                     System.out.println("ENDING PROGRAM");
@@ -169,7 +192,6 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             scanner.nextLine();
             curOrigin=scanner.nextLine();
 
-
             tags=new ArrayList<>();
             nextLine=scanner.nextLine();
             nextLineScanner = new Scanner(nextLine);
@@ -177,13 +199,10 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             {
                 tags.add(nextLineScanner.next());
             }
-
-            
-
-
-
             curActualLocation=scanner.nextLine();
             curDescription= scanner.nextLine();
+
+
            curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription);
            if(debugDetail)
            {

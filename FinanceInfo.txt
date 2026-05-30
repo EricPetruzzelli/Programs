@@ -85,8 +85,8 @@ Kinda random, so just gonna put it all in savings budget
 
 05 18 26
 -15
-Unkown
-Unkown
+Unknown
+Unknown
 PNC_SPEND
 "PF Lancaster Lit IClub Fees ach debit PRx5201" idk what this is
 
@@ -142,8 +142,8 @@ At Harrisburg Airport during trip delay
 
 05 20 26
 39
-transfer
 PNC_SPEND
+transfer
 Cash
 ATM at SEISMIC
 
