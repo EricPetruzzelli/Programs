@@ -1,10 +1,9 @@
 import java.io.File;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,6 +16,7 @@ public class FinanceMain //moneyOrganizer
      static int YEAREND=27;
 
      static MoneyOrganizer moneyOrganizer;
+     static Graph theGraph;
      static TransactionCalander OccuranceCal=new TransactionCalander(true);
      static TransactionCalander LocationCal=new TransactionCalander(false);
 
@@ -31,95 +31,153 @@ public class FinanceMain //moneyOrganizer
     public static void main(String[] args) 
     {
         if(debug)
-            System.err.println("DEBUG ON \n STARTING MAIN");
+            System.err.println("DEBUG ON \nSTARTING MAIN");
 
         ReadInfo(INFO_FILE_NAME);
+        initializeOptions();
+        String op = theGraph.read();
+        int x;
+        String option;
 
-
-        while(true)
+        if(op.contains("explore"))
         {
-            System.out.println("\n\nCHOOSE AN OPTION");
-            System.out.println("1. PRINT ALL TRANSACTIONS");
-            System.out.println("2. PRINT TOTAL AMOUNT");
-            System.out.println("3. PRINT TAGS");
-            System.out.println("4. GET TOTAL FROM TAG");
-            System.out.println("5. GET TOTAL IN LOCATION");
-            System.out.println("0. END PROGRAM");
-            Scanner scanner = new Scanner(System.in);
-            switch (scanner.next()) {
-                case "1":
-                    System.out.print(moneyOrganizer.stringOfTransactions());
-                    break;
-                case "2":
-                    System.out.print("Total amount is $"+moneyOrganizer.totalAmount());
-                    break;
-                case "3":
-                    System.out.print("\nPRINTING TAGS\n");
-                    Set<String> tags = moneyOrganizer.getTags();
-                    for(String tag: tags)
-                        System.out.println(tag);
-                    break;
-                case "4":
-                    System.out.println("Tag?");
-                    String tag = scanner.next();
-                    if(!moneyOrganizer.getTags().contains(tag))
-                    {
-                        System.out.print("TAG NOT IN ORGANIZER");
-                        break;
-                    }
-                    
-                    System.out.print("Total in "+tag+" is "+moneyOrganizer.getTotalFromTag(tag));
-                    break;
-                    case "5":
-                    System.out.println("Tag?");
-                    String location = scanner.next();
-                    if(!moneyOrganizer.getLocations().contains(location))
-                    {
-                        System.out.print("LOCATION NOT IN ORGANIZER");
-                        break;
-                    }
-                    
-                    System.out.print("Total in "+location+" is "+moneyOrganizer.getTotalInLocation(location));
-                    break;
-                case "0":
-                    System.out.println("ENDING PROGRAM");
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("ENTER VALID INPUT");
-            }
+            option="explore";
         }
+        else if(op.contains("get values"))
+        {
+            option = "get values";
+        }
+        else
+            option="root";
+
+        x=Integer.valueOf(op.substring(0, op.indexOf(option)));
+        switch (option) {
+            case "root":
+                break;
+            case "explore":
+                System.out.print("EXPLORE CHOSEN");
+                break;
+            case "get values":
+                break;
+            default:
+                throw new AssertionError();
+        }
+            
+        //.contains then switch could work?
+
+
 
     }
-
-    static double getAmountInLocation(Map<String, SortedSet<Transaction>> map, String key)
+    private static void initializeOptions()
     {
-        double total=0;
-        Iterator<Transaction> list = map.get(key).iterator();
-        while(list.hasNext())
-        {
-            total=total + list.next().cost;
-        }
-        return total;
-    }
-    static void printHashMap(Map<String, SortedSet<Transaction>> map)
-    {
-        Iterator<Transaction> curList;
-        String curKey;
         if(debug)
-            System.err.println("PRINTING A HASHMAP");
-        Iterator<String> keyIterator= new TreeSet<String>(map.keySet()).iterator(); //Tree Set sorts the set
-        while(keyIterator.hasNext())
-        {
-            curKey=keyIterator.next();
-            System.out.print("\n"+curKey+":\n");
-            curList = map.get(curKey).iterator();//ERROR HERE
-            while(curList.hasNext())
-            {
-                System.out.println(curList.next()+"\n");
-            }
-        }
+            System.err.println("INITIALIZE STARTED");
+        theGraph= new Graph("1. EXPLORE\n2.GET VALUES");
+
+        String printThis="1. PRINT MAINTAGS\n2. PRINT ALL TAGS\n3. PRINT LOCATIONS\n4. PRINT ALL TRANSACTIONS";
+        theGraph.addNode("explore", printThis, "root");
+        printThis = "1. GET TOTAL\n2. GET TOTAL FROM TAG\n3. GET TOTAL FROM LOCATIONS";
+        theGraph.addNode("get values", printThis, "root");
+        if(debug)
+            System.err.println("INITIALIZE COMPLETED");
     }
+    private static class Graph
+    {
+        final String FIRSTLINE = "\n\nCHOOSE AN OPTION\n";
+        final String LASTLINE = "\n0. END PROGRAM\n-1. GO BACK\n";
+        final Node root;
+
+        public Graph(String printOut)
+        {
+            root = new Node("root",printOut,null);
+        }
+        public void addNode(String nodeName, String printOutNode, String parentNode)
+        {
+            search(parentNode).addChild(nodeName, printOutNode);
+        }
+        private void printOut(Node node)
+        {
+            System.out.print(FIRSTLINE+node+LASTLINE); 
+        }
+
+
+
+        private Node search(String name)
+        {
+            return searchHelper(name, root);
+        }
+        private Node searchHelper(String nameGoal, Node curNode)
+        {
+            if(curNode.name.equals(nameGoal))
+                return curNode;
+            for(Node child: curNode.children)
+            {
+                searchHelper(nameGoal,child);
+            }
+            return null;
+        }
+        public String read()
+        {
+            return read(root);
+        }
+        public String read(Node node)
+            {
+                printOut(node);
+                int x=0;
+                Scanner scanner=new Scanner(System.in);
+                try{x= scanner.nextInt();} //error here?
+                catch(InputMismatchException e)
+                {
+                    System.out.println("PLEASE ENTER AN ACCEPTED VALUE");
+                    return read(node);
+                }
+                //if choose branching option
+                if(x==0)
+                {
+                    System.out.print("ENDING PROGRAM");
+                    System.exit(0);
+                    return "";
+                }
+                else if(x==-1)
+                {
+                    return read(node.parent);
+                }
+                else if(node.children.size()>=x)
+                {
+                    return read(node.children.get(x-1));
+                }
+                else
+                {
+                    return x+node.name;
+                }
+            }
+        
+        private class Node
+        {
+            String name;
+            String printOut;
+            LinkedList<Node> children;
+            Node parent;
+            public Node(String name, String printOut, Node parent)
+            {
+                this.name=name;
+                this.printOut=printOut;
+                this.parent=parent;
+                children=new LinkedList<>();
+            }
+            public void addChild(String name, String printOut)
+            {
+                children.add(new Node(name, printOut,this));
+            }
+            public String toString()
+            {
+                return printOut;
+            }
+            
+        }
+
+    }
+   
 
     static void ReadInfo(String fileName)
     {
@@ -239,10 +297,6 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
                         calander.get(yearIndex).get(monthIndex).add(new TreeSet<>());
                 }
             }
-
-
-
-
             this.useOcDate=useOcDate;
         }
         //date is month day year
@@ -258,10 +312,6 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             date[2]=date[2]-1; //reduce by one so fits into 12 system (so january is 00)
             int yearIndex = date[0]-YEARSTART;
             calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);
-
-
-
-
         }
     }
 }

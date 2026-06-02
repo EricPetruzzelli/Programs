@@ -189,18 +189,60 @@ ProfessionalExpense transportation
 PNC_SPEND
 Michigan Bus to staples
 
-05 26 26
+05 26 26 05 27 26
 -44.05
 CVS
 Hygene
 PNC_SPEND
 2x Dove Volume Dry Shampoo (large), 2x Deep Clean Action Facial Cleanser
 
-05 26 26
+05 26 26 05 27 26
 -7.41
 Staples
 ProfessionalExpense LearningSupplies
 PNC_SPEND
 g2 colored pens 
+
+05 22 26 05 26 26
+-4.89
+DTW airport
+ProfessionalExpense
+PNC_SPEND
+water from Harnonie Public Market in the DTW airport
+
+05 30 26
+-19
+ShadowLand
+entertainment
+Cash
+NA
+
+05 30 26
+-10
+Shadowland
+entertainment concert
+PNC_SPEND
+Entrance fee (at Zoetropolis Cinema)
+
+05 30 26
+-9.6
+ShadowLand
+entertainment alcohol
+PNC_SPEND
+gin
+
+05 29 26
+-14
+Tellus
+entertainment alcohol
+PNC_SPEND
+guiness during Emo night
+
+05 27 26 05 28 26
+-7.63
+Midnight Oil
+ProfessionalExpense
+PNC_SPEND
+NA
 
 
