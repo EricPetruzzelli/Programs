@@ -33,26 +33,8 @@ public class Transaction implements Comparable<Transaction>
     @Override
     public int compareTo(Transaction other) //year month day format
     {
-        int index=0;
-        if(OcDate[0]==other.OcDate[0])
-        {
-            if(OcDate[1]==other.OcDate[1])
-            {
-                if(OcDate[2]==other.OcDate[2])
-                {
-                    return -1;
-                }
-                else
-                    index=2;
-            }
-            else
-                index=1;
-        }
-        else
-        {
-            index=0;
-        }
-        return OcDate[index]-other.OcDate[index];
+
+        return (int) ((this.cost*100)-other.cost*100);
     }
 
     

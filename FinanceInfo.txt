@@ -4,7 +4,7 @@ Cost:
 Place Origin: (CVS, Midnight Oil, etc )
 Tags: Main tag followed by sub-tags(Transfer, work, Fashion, rent, fun, etc)
 Actual Location or Transfer To: (' for automatically set??)
-Description: (nail polish, T-Shirt, concert tickets, etc)
+Description: (nail polish, T-Shirt, Concert tickets, etc)
 
 5 11 26 
 11
@@ -17,21 +17,21 @@ Starting Stuff
 823.63
 Pitt
 work
-PNC_SPEND 
+PNC_SPEND
 NA
 
 05 07 26
 -143
 American Red Cross
 ProfessionalExpense
-PNC_SPEND 
+PNC_SPEND
 CPR certification. May be innacurate occurance date
 
 05 06 26 05 08 26
 -5
 LancasterCity
 ProfessionalExpense
-PNC_SPEND 
+PNC_SPEND
 May 06 2026 job fair LancasterCity
 
 05 12 26
@@ -51,7 +51,7 @@ Notebook for personal finance notes
 05 12 26
 -7.63
 Midnight Oil
-Restaurant
+ProfessionalExpense Restaurant
 PNC_SPEND
 may be innacurate occurance date
 
@@ -60,19 +60,19 @@ may be innacurate occurance date
 Tellus 360
 Entertainment
 PNC_SPEND
-Emo concert at Tellus
+Emo Concert at Tellus
 
 05 14 26 05 15 26
 -7.63
 Midnight Oil
-Restaurant
+ProfessionalExpense Restaurant
 PNC_SPEND
 may be innacurate occurance date
 
 05 14 26 05 15 26
 -7.63
 Midnight Oil
-Restaurant
+ProfessionalExpense Restaurant
 PNC_SPEND
 may be innacurate occurance date
 
@@ -100,7 +100,7 @@ NA
 05 16 26 05 18 26
 -8
 Phantom Power
-Restaurant
+Entertainment Alcohol
 PNC_SPEND
 Beer
 
@@ -109,7 +109,7 @@ Beer
 Phantom Power
 Entertainment Concert
 PNC_SPEND
-metal concert
+metal Concert
 
 05 15 26 05 18 26
 -7
@@ -213,28 +213,28 @@ water from Harnonie Public Market in the DTW airport
 05 30 26
 -19
 ShadowLand
-entertainment
+Entertainment
 Cash
 NA
 
 05 30 26
 -10
 Shadowland
-entertainment concert
+Entertainment Concert
 PNC_SPEND
 Entrance fee (at Zoetropolis Cinema)
 
 05 30 26
 -9.6
 ShadowLand
-entertainment alcohol
+Entertainment Alcohol
 PNC_SPEND
 gin
 
 05 29 26
 -14
 Tellus
-entertainment alcohol
+Entertainment Alcohol
 PNC_SPEND
 guiness during Emo night
 

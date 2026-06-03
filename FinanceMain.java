@@ -1,30 +1,24 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.InputMismatchException;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.HashMap;
 
 public class FinanceMain //moneyOrganizer
 {
     //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
 
-     static int YEARSTART=26;
-     static int YEAREND=27;
+
 
      static MoneyOrganizer moneyOrganizer;
      static Graph theGraph;
-     static TransactionCalander OccuranceCal=new TransactionCalander(true);
-     static TransactionCalander LocationCal=new TransactionCalander(false);
-
-     static double totalAmount;
-     
-
-
     final public static String INFO_FILE_NAME="FinanceInfo.txt";
+    final public static String SPECIALCASES="SpecialCases.txt";
     //debuggers
     static boolean debug=true;
     static boolean debugDetail=false;
@@ -33,11 +27,21 @@ public class FinanceMain //moneyOrganizer
         if(debug)
             System.err.println("DEBUG ON \nSTARTING MAIN");
 
-        ReadInfo(INFO_FILE_NAME);
+        
+       try{ moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME),readSpecial(SPECIALCASES));}
+       catch(FileNotFoundException e){System.err.println("FILE NOT FOUND"); System.exit(0);}
         initializeOptions();
         String op = theGraph.read();
         int x;
         String option;
+        char[] charArray = op.toCharArray();
+        for(int index=0; index<op.length();index++)
+        {
+            if(!Character.isDigit(charArray[index]))
+            {
+                option=op.substring(index);
+            }
+        }
 
         if(op.contains("explore"))
         {
@@ -47,6 +51,10 @@ public class FinanceMain //moneyOrganizer
         {
             option = "get values";
         }
+        else if(op.contains("budgeting"))
+        {
+            option = "budgeting";
+        }
         else
             option="root";
 
@@ -55,29 +63,89 @@ public class FinanceMain //moneyOrganizer
             case "root":
                 break;
             case "explore":
-                System.out.print("EXPLORE CHOSEN");
+                switch (x) {
+                    case 1:
+                        Set<String> mainTags = moneyOrganizer.getMainTags();
+                        double percent;
+                        for(String tag: mainTags)
+                        {
+                            percent = (moneyOrganizer.getTotalFromTag(tag));
+                            System.out.println(tag+" "+moneyOrganizer.getTotalFromTag(tag)+"");
+                        }
+                        askSortByCost(mainTags, 0);
+                            
+                        break;
+                    case 2:
+                        Set<String> tags = moneyOrganizer.getTags();
+                        for(String tag: tags)
+                            System.out.println(tag+" "+moneyOrganizer.getTotalFromTag(tag));
+                        askSortByCost(tags, 0);
+                        break;
+                    case 3:
+                        Set<String> locations = moneyOrganizer.getLocations();
+                        for(String location: locations)
+                            System.out.println(location+" "+moneyOrganizer.getTotalInLocation(location));
+                        askSortByCost(locations, 1);
+                        break;
+                    case 4:
+                        Set<String> origins = moneyOrganizer.getOrigins();
+                        for(String origin: origins)
+                            System.out.println(origin+" "+moneyOrganizer.getTotalFromOrigin(origin));
+                        askSortByCost(origins, 2);
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+
                 break;
             case "get values":
+                break;
+            case "budgeting":
+                switch (x) {
+                    case 1: //get stuff in spendbudget
+
+                        
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
                 break;
             default:
                 throw new AssertionError();
         }
             
         //.contains then switch could work?
-
-
-
+    }
+    private static class SimpleTransaction implements Comparable<SimpleTransaction>
+    {
+        Double cost;
+        String label;
+        public SimpleTransaction(Double cost, String label)
+        {
+            this.cost=cost;
+            this.label=label;
+        }
+        public int compareTo(SimpleTransaction other)
+        {
+            return (int) (this.cost*100-other.cost*100);
+        }
+        public String toString()
+        {
+            return this.label+" "+this.cost;
+        }
     }
     private static void initializeOptions()
     {
         if(debug)
             System.err.println("INITIALIZE STARTED");
-        theGraph= new Graph("1. EXPLORE\n2.GET VALUES");
+        theGraph= new Graph("1. EXPLORE\n2. GET VALUES\n3. BUDGETING");
 
-        String printThis="1. PRINT MAINTAGS\n2. PRINT ALL TAGS\n3. PRINT LOCATIONS\n4. PRINT ALL TRANSACTIONS";
+        String printThis="1. PRINT MAINTAGS\n2. PRINT ALL TAGS\n3. PRINT LOCATIONS\n4. PRINT ORIGINS";
         theGraph.addNode("explore", printThis, "root");
         printThis = "1. GET TOTAL\n2. GET TOTAL FROM TAG\n3. GET TOTAL FROM LOCATIONS";
         theGraph.addNode("get values", printThis, "root");
+        printThis = "1. GET SPEND BUDGET";
+        theGraph.addNode("budgeting", printThis, "root");
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
     }
@@ -151,7 +219,6 @@ public class FinanceMain //moneyOrganizer
                     return x+node.name;
                 }
             }
-        
         private class Node
         {
             String name;
@@ -173,13 +240,9 @@ public class FinanceMain //moneyOrganizer
             {
                 return printOut;
             }
-            
         }
-
     }
-   
-
-    static void ReadInfo(String fileName)
+    static Set<Transaction> ReadInfo(String fileName)
     {
         Set<Transaction> transactionSet = new HashSet<Transaction>();
         int[] curOcDate=new int[3];
@@ -193,15 +256,6 @@ public class FinanceMain //moneyOrganizer
         Transaction curTransaction;
         if(debug)
             System.out.println("STARTING READINFO");
-/*
-Date: (mmddyy)
-Cost:
-Type Origin: (CVS, Midnight Oil, etc )
-Type: (Transfer, work, Fashion, rent, fun, etc)
-Actual Location or Transfer To: (' for automatically set??)
-Description: (nail polish, T-Shirt, concert tickets, etc)
-*/
-
         Scanner scanner=null;
         File file = new File(fileName);
         try {
@@ -209,11 +263,8 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
         } catch (Exception e) {
         }
         int amountToSkip = scanner.nextInt();
-        
         for (int i=0; i<amountToSkip; i++)
             scanner.nextLine();
-        
-        
         /*reads through the file in this order
         line read for date(s)
 
@@ -243,9 +294,6 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             {
                 curDate=curOcDate.clone();
             }
-            
-                
-
             curCost=scanner.nextDouble(); 
             scanner.nextLine();
             curOrigin=scanner.nextLine();
@@ -259,59 +307,80 @@ Description: (nail polish, T-Shirt, concert tickets, etc)
             }
             curActualLocation=scanner.nextLine();
             curDescription= scanner.nextLine();
-
-
-           curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription);
+            curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription);
            if(debugDetail)
            {
             System.err.println(curTransaction+"\n");
            }
             transactionSet.add(curTransaction);
-            OccuranceCal.addTransaction(curTransaction);
-            LocationCal.addTransaction(curTransaction);
         }
-
-        moneyOrganizer=new MoneyOrganizer(transactionSet);
         if(debug)
             System.out.println("COMPLETED READINFO");
         scanner.close();
+        return transactionSet;
     }
 
-    private static class TransactionCalander
+    static Set<String> readSpecial(String fileName) throws FileNotFoundException
     {
-        //each date will be an arraylist of arraylists of arraylists of sets (YY/MM/DD)
-        static LinkedList<LinkedList<LinkedList<TreeSet<Transaction>>>> calander;
-        static boolean useOcDate;        
-        //uses several arraylists in succession. If space or initial runtime become an issue, could turn this into a tree instead
-        public TransactionCalander(boolean useOcDate)
-        {
-            calander=new LinkedList<>();
+        Set<String> output=new HashSet<String>();
+        File file = new File(fileName);
+        Scanner scanner;
+        try {scanner= new Scanner(file);}
+        catch (Exception e) { throw new FileNotFoundException("Special file not found");}
 
-            for(int yearIndex=0; yearIndex< YEAREND-YEARSTART+1;yearIndex++)
+        while(true)
+        {
+            if(scanner.nextLine().equals("BUDGET EXPENSES"))
+                break;
+        }
+        while(scanner.hasNextLine())
+            output.add(scanner.nextLine());
+        scanner.close();
+        return output;        
+    }
+    /**
+     * @param set set of tags,locations, or origins
+     * @param x 0 for tag, 1 for location, 2 for origin
+     * @return asks if you want to sort by cost
+     */
+    public static void askSortByCost(Set<String> set, int x)
+    {
+        Set<SimpleTransaction> orderedSet;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Sort by cost? (Y/N)");
+            if(scanner.next().toUpperCase().equals("Y"))
             {
-                calander.add(new LinkedList<>());
-                for(int monthIndex=0; monthIndex<12;monthIndex++)
+                orderedSet = sortByCost(set, x);
+                for(SimpleTransaction simpleTransaction: orderedSet)
                 {
-                    calander.get(yearIndex).add(new LinkedList<>());
-                    for(int dayIndex=0;dayIndex<31;dayIndex++)
-                        calander.get(yearIndex).get(monthIndex).add(new TreeSet<>());
+                    System.out.println(simpleTransaction);
                 }
             }
-            this.useOcDate=useOcDate;
+    }
+    /**
+     * @param set set of tags,locations, or origins
+     * @param x 0 for tag, 1 for location, 2 for origin
+     * @return ordered set of SimpleTransactions
+     */
+    public static TreeSet<SimpleTransaction> sortByCost(Set<String> set, int x)
+    {
+        TreeSet<SimpleTransaction> output=new TreeSet<>();
+        for(String string: set)
+        {
+            switch (x) {
+                case 0:
+                    output.add(new SimpleTransaction(moneyOrganizer.getTotalFromTag(string), string));
+                    break;
+                case 1:
+                    output.add(new SimpleTransaction(moneyOrganizer.getTotalInLocation(string), string));
+                    break;
+                case 2:
+                    output.add(new SimpleTransaction(moneyOrganizer.getTotalFromOrigin(string), string));
+                    break;
+                default:
+                    throw new AssertionError();
+            }
         }
-        //date is month day year
-        public static void addTransaction(Transaction transaction)
-        {//year month day format
-            int[] date;
-            if(useOcDate)
-                date=transaction.OcDate.clone();
-            else
-                date=transaction.date.clone();
-
-            date[1]=date[1]-1;
-            date[2]=date[2]-1; //reduce by one so fits into 12 system (so january is 00)
-            int yearIndex = date[0]-YEARSTART;
-            calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);
-        }
+        return output;
     }
 }
