@@ -7,8 +7,6 @@ import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.HashMap;
-
 public class FinanceMain //moneyOrganizer
 {
     //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
@@ -102,8 +100,13 @@ public class FinanceMain //moneyOrganizer
                 break;
             case "budgeting":
                 switch (x) {
-                    case 1: //get stuff in spendbudget
-
+                    case 1: //get budget spend
+                        Set<String> budgetExceptions= moneyOrganizer.getBudgetExceptions();
+                        for(String exception: budgetExceptions)
+                        {
+                            System.out.println(exception+" "+moneyOrganizer.getTotalFromTag(exception));
+                        }
+                        askSortByCost(budgetExceptions, 0);
                         
                         break;
                     default:
@@ -144,7 +147,7 @@ public class FinanceMain //moneyOrganizer
         theGraph.addNode("explore", printThis, "root");
         printThis = "1. GET TOTAL\n2. GET TOTAL FROM TAG\n3. GET TOTAL FROM LOCATIONS";
         theGraph.addNode("get values", printThis, "root");
-        printThis = "1. GET SPEND BUDGET";
+        printThis = "1. GET BUDGET EXCEPTIONS\n 2. GET TOTAL BUDGET";
         theGraph.addNode("budgeting", printThis, "root");
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
@@ -252,6 +255,7 @@ public class FinanceMain //moneyOrganizer
         ArrayList<String> tags;
         String curActualLocation;
         String curDescription; 
+        String curBudget=null;
 
         Transaction curTransaction;
         if(debug)
@@ -305,9 +309,15 @@ public class FinanceMain //moneyOrganizer
             {
                 tags.add(nextLineScanner.next());
             }
-            curActualLocation=scanner.nextLine();
+
+            nextLine=scanner.nextLine();
+            nextLineScanner = new Scanner(nextLine);
+            curActualLocation=nextLineScanner.next(); //error here
+            if(nextLineScanner.hasNext())
+                curBudget=nextLineScanner.next();
+
             curDescription= scanner.nextLine();
-            curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription);
+            curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription, curBudget);
            if(debugDetail)
            {
             System.err.println(curTransaction+"\n");
@@ -330,7 +340,7 @@ public class FinanceMain //moneyOrganizer
 
         while(true)
         {
-            if(scanner.nextLine().equals("BUDGET EXPENSES"))
+            if(scanner.nextLine().equals("SPEND BUDGET"))
                 break;
         }
         while(scanner.hasNextLine())

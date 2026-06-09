@@ -3,7 +3,7 @@ Date occured   Date actual: (mmddyy) 00 00 0000 means unkown OR not occured (i.e
 Cost:
 Place Origin: (CVS, Midnight Oil, etc )
 Tags: Main tag followed by sub-tags(Transfer, work, Fashion, rent, fun, etc)
-Actual Location or Transfer To: (' for automatically set??)
+Actual Location or Transfer To or Budget Kind: (PNC_SPEND, Budget_Spend, Budget_ProfessionalExpense, etc)
 Description: (nail polish, T-Shirt, Concert tickets, etc)
 
 5 11 26 
@@ -244,5 +244,11 @@ Midnight Oil
 ProfessionalExpense
 PNC_SPEND
 NA
+
+06 02 26
+250
+Budget
+Budget
+s
 
 

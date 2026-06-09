@@ -25,10 +25,33 @@ public class MoneyOrganizer
         }
     }
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+BUDGET+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+//can either designate budget in file or hardcode it. will probably end up hardcoding it to reduce typing time and redundency.
+//OR I COULD DO BOTH... when it reads a specile file, create and add a new budget transaction. this will take up more memory though
+//i think imma just end up hard coding it (may change later but doubt it)
+//ProfessionalExpense Budget
+//Necessity Budget
+//Spending Budget
+//Saving Budget
+//
 public Set<String> getBudgetExceptions()
 {
     return budgetExeptions;
 }
+public Double getSpendBudgetTotal()
+{
+    Double output=0.0;
+
+    for(Transaction transaction: theSet)
+    {
+        if(budgetExeptions.contains(transaction.tags.get(0)))
+        {
+            output+=transaction.cost;
+        }
+    }
+    return output;
+}
+
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=GENERAL+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 
     public double getTotal()

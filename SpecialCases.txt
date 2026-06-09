@@ -1,4 +1,5 @@
-BUDGET EXPENSES
+SPEND BUDGET
 Entertainment
 Fashion
-Subscription
+BudgetAdd
+BudgetTransfer
