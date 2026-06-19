@@ -8,7 +8,7 @@ public class Transaction implements Comparable<Transaction>
     public ArrayList<String> tags;
     public String location;
     public String description;
-    public String budget;
+    public String budget=null;
     public Transaction(int[] OcDate,int[] date, double cost, String typeOrigin, ArrayList<String> tags, String location, String description)
     {
         this.OcDate=OcDate;
@@ -45,21 +45,7 @@ public class Transaction implements Comparable<Transaction>
     @Override
     public int compareTo(Transaction other) //year month day format
     {
-
-        int index;
-        if(OcDate[0]>other.OcDate[0])
-        {
-            index=0;
-        }
-        else if(OcDate[1]>other.OcDate[1])
-        {
-            index=1;
-        }
-        else
-        {
-            index=2;
-        }
-        return OcDate[index]-other.OcDate[index];
+        return (OcDate[0]-other.OcDate[0])*360+(OcDate[1]-other.OcDate[1]*31+(OcDate[2]-other.OcDate[2]));
     }
 
     

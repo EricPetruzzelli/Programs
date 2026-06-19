@@ -7,9 +7,12 @@ import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.lang.reflect.*;
+import java.util.SortedSet;
 public class FinanceMain //moneyOrganizer
 {
     //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
+
 
 
 
@@ -45,9 +48,9 @@ public class FinanceMain //moneyOrganizer
         {
             option="explore";
         }
-        else if(op.contains("get values"))
+        else if(op.contains("get transactions"))
         {
-            option = "get values";
+            option = "get transactions";
         }
         else if(op.contains("budgeting"))
         {
@@ -91,30 +94,26 @@ public class FinanceMain //moneyOrganizer
                             System.out.println(origin+" "+moneyOrganizer.getTotalFromOrigin(origin));
                         askSortByCost(origins, 2);
                         break;
+                    case 5: //print ALL transactions
+                        System.out.println(moneyOrganizer.stringOfTransactions());
+                        break;
                     default:
                         throw new AssertionError();
                 }
 
                 break;
-            case "get values":
+            case "get transactions":
+
                 break;
             case "budgeting":
                 switch (x) {
-                    case 1: //get budget spend
-                        Set<String> budgetExceptions= moneyOrganizer.getBudgetExceptions();
-                        for(String exception: budgetExceptions)
+                    case 1: //print all budgets and values
+                        for(String budget: moneyOrganizer.getBudgets())
                         {
-                            System.out.println(exception+" "+moneyOrganizer.getTotalFromTag(exception));
+                            System.out.println(budget+" value is "+ moneyOrganizer.getBudgetTotal(budget));
                         }
-                        askSortByCost(budgetExceptions, 0);
-                        
                         break;
-                    default:
-                        throw new AssertionError();
                 }
-                break;
-            default:
-                throw new AssertionError();
         }
             
         //.contains then switch could work?
@@ -141,13 +140,12 @@ public class FinanceMain //moneyOrganizer
     {
         if(debug)
             System.err.println("INITIALIZE STARTED");
-        theGraph= new Graph("1. EXPLORE\n2. GET VALUES\n3. BUDGETING");
+        theGraph= new Graph("1. EXPLORE\n2. GET TRANSACTIONS\n3. BUDGETING");
 
         String printThis="1. PRINT MAINTAGS\n2. PRINT ALL TAGS\n3. PRINT LOCATIONS\n4. PRINT ORIGINS";
         theGraph.addNode("explore", printThis, "root");
-        printThis = "1. GET TOTAL\n2. GET TOTAL FROM TAG\n3. GET TOTAL FROM LOCATIONS";
-        theGraph.addNode("get values", printThis, "root");
-        printThis = "1. GET BUDGET EXCEPTIONS\n 2. GET TOTAL BUDGET";
+        theGraph.addNode("get transactions", printThis, "root");
+        printThis = "1. PRINT BUDGET TYPES\n2. FUN BUDGET\n3. GET PROFESSIONAL EXPENSE BUDGET";
         theGraph.addNode("budgeting", printThis, "root");
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
@@ -228,12 +226,23 @@ public class FinanceMain //moneyOrganizer
             String printOut;
             LinkedList<Node> children;
             Node parent;
+            String methodName;// Which method to call at runtime
+
+
             public Node(String name, String printOut, Node parent)
             {
                 this.name=name;
                 this.printOut=printOut;
                 this.parent=parent;
                 children=new LinkedList<>();
+            }
+            public Node(String name, String printOut, Node parent, String methodName)
+            {
+                this.name=name;
+                this.printOut=printOut;
+                this.parent=parent;
+                children=new LinkedList<>();
+                this.methodName=methodName;
             }
             public void addChild(String name, String printOut)
             {
@@ -243,11 +252,20 @@ public class FinanceMain //moneyOrganizer
             {
                 return printOut;
             }
+            /**
+             * does a method. usually prints something out
+             */
+            public void activate() throws Exception
+            {
+                FinanceMain obj = new FinanceMain();
+                Method m = FinanceMain.class.getMethod(methodName);
+                m.invoke(null);
+            }
         }
     }
-    static Set<Transaction> ReadInfo(String fileName)
+    static SortedSet<Transaction> ReadInfo(String fileName)
     {
-        Set<Transaction> transactionSet = new HashSet<Transaction>();
+        SortedSet<Transaction> transactionSet = new TreeSet<Transaction>();
         int[] curOcDate=new int[3];
         int[] curDate=new int[3];
         Double curCost;

@@ -1,6 +1,7 @@
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 public class MoneyOrganizer 
 {
@@ -8,16 +9,15 @@ public class MoneyOrganizer
     final int YEAREND=27;
     TransactionCalander budgetCal;
     TransactionCalander locationCal;
-    final private Set<Transaction> theSet;
+    final private SortedSet<Transaction> theSet;
     final private Set<String> budgetExeptions;
 
-    public MoneyOrganizer(Set<Transaction> transactionSet, Set<String> budgetExeptions)
+    public MoneyOrganizer(SortedSet<Transaction> transactionSet, Set<String> budgetExeptions)
     {
         theSet=transactionSet;
         this.budgetExeptions=budgetExeptions;
         budgetCal=new TransactionCalander(true);
         locationCal=new TransactionCalander(false);
-
         for(Transaction transaction: theSet)
         {
             budgetCal.addTransaction(transaction);
@@ -26,29 +26,42 @@ public class MoneyOrganizer
     }
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+BUDGET+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 
-//can either designate budget in file or hardcode it. will probably end up hardcoding it to reduce typing time and redundency.
-//OR I COULD DO BOTH... when it reads a specile file, create and add a new budget transaction. this will take up more memory though
-//i think imma just end up hard coding it (may change later but doubt it)
-//ProfessionalExpense Budget
-//Necessity Budget
-//Spending Budget
-//Saving Budget
-//
-public Set<String> getBudgetExceptions()
-{
-    return budgetExeptions;
-}
-public Double getSpendBudgetTotal()
+public Double getBudgetTotal(String targetBudget)
 {
     Double output=0.0;
 
     for(Transaction transaction: theSet)
     {
-        if(budgetExeptions.contains(transaction.tags.get(0)))
+        if(transaction.budget!=null&&transaction.budget.equals(targetBudget))
         {
             output+=transaction.cost;
         }
     }
+    return output;
+}
+public Set<String> getBudgets()
+{
+    Set<String> output = new TreeSet<>();
+    for(Transaction transaction: theSet)
+    {
+        if(transaction.budget!=null)
+            output.add(transaction.budget);
+    }
+    return output;
+}
+public String stringOfTransactionsFromBudget(String budget)
+{
+    return stringOfTransactions(getTransactionsFromBudget(budget));
+}
+
+private Set<Transaction> getTransactionsFromBudget(String budget)
+{
+    Set<Transaction> output =new HashSet<>();
+        for(Transaction transaction: theSet)
+        {
+            if(transaction.tags.contains(budget))
+                output.add(transaction);
+        }
     return output;
 }
 
@@ -59,7 +72,7 @@ public Double getSpendBudgetTotal()
         double output=0;
         for(Transaction transaction: theSet)
         {
-            if(!transaction.tags.get(0).equals("Transfer"))
+            if(!transaction.tags.get(0).equals("Transfer")&&!transaction.location.equals("Budget"))
             {
                 output+=transaction.cost;
             }
@@ -140,12 +153,14 @@ public Double getSpendBudgetTotal()
     
 
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=LOCATIONS+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-    public Set<String> getLocations()
+    public Set<String> getLocations(int[] date)
     {
         Set<String> output = new TreeSet<>();
 
         for(Transaction transaction: theSet)
         {
+            if(dateCompareTo(date, transaction.date)<0)
+                break;
             output.add(transaction.location);
         }
         return output;
@@ -183,9 +198,12 @@ public Double getSpendBudgetTotal()
     }
 
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=CALANDER+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+    private int dateCompareTo(int[] dateOne, int[] dateTwo)
+    {
+        return (dateOne[0]-dateTwo[0])*365+(dateOne[1]-dateTwo[1])*31+(dateOne[2]-dateTwo[2]);
+    }
 
-
-     private class TransactionCalander
+    private class TransactionCalander
     {
         //each date will be an arraylist of arraylists of arraylists of sets (YY/MM/DD)
         static LinkedList<LinkedList<LinkedList<TreeSet<Transaction>>>> calander;
@@ -221,6 +239,8 @@ public Double getSpendBudgetTotal()
             int yearIndex = date[0]-YEARSTART;
             calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);
         }
+
+        
     }
 
 }

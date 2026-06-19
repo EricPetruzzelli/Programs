@@ -3,7 +3,7 @@ Date occured   Date actual: (mmddyy) 00 00 0000 means unkown OR not occured (i.e
 Cost:
 Place Origin: (CVS, Midnight Oil, etc )
 Tags: Main tag followed by sub-tags(Transfer, work, Fashion, rent, fun, etc)
-Actual Location or Transfer To or Budget Kind: (PNC_SPEND, Budget_Spend, Budget_ProfessionalExpense, etc)
+Actual Location or Transfer To or Budget Kind: (PNC_SPEND Budget_Fun, Budget_ProfessionalExpense, etc)
 Description: (nail polish, T-Shirt, Concert tickets, etc)
 
 5 11 26 
@@ -24,14 +24,14 @@ NA
 -143
 American Red Cross
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 CPR certification. May be innacurate occurance date
 
 05 06 26 05 08 26
 -5
 LancasterCity
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 May 06 2026 job fair LancasterCity
 
 05 12 26
@@ -45,14 +45,14 @@ UNKNOWN! NEED TO CANCEL!!
 -5.29
 Staples
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 Notebook for personal finance notes
 
 05 12 26
 -7.63
 Midnight Oil
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 may be innacurate occurance date
 
 05 12 26 05 13 26
@@ -66,14 +66,14 @@ Emo Concert at Tellus
 -7.63
 Midnight Oil
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 may be innacurate occurance date
 
 05 14 26 05 15 26
 -7.63
 Midnight Oil
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 may be innacurate occurance date
 
 05 15 26
@@ -92,7 +92,7 @@ PNC_SPEND
 
 05 17 26 05 18 26
 -11.45
-Cashapp
+CASHAPP
 junk
 PNC_SPEND
 NA
@@ -115,7 +115,7 @@ metal Concert
 -7
 Midnight Oil
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 may be innacurate occurance date
 
 
@@ -123,49 +123,49 @@ may be innacurate occurance date
 -20.43
 Subway
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 At Harrisburg Airport during trip delay
 
 05 18 26 05 19 26
 -3.07
 Subway
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 At Harrisburg Airport during trip delay
 
 05 18 26 05 19 26
 -20.84
 Subway
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 At Harrisburg Airport during trip delay
 
 05 20 26
 39
 PNC_SPEND
 transfer
-Cash
+CASH
 ATM at SEISMIC
 
 05 19 26
 -26.49
 Staples
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 Pitt Business Cards at Ann Harbor Jacksonville store
 
 05 20 26
 -4.15
 Ann Harbor
 ProfessionalExpense 
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 Vending Machine idk what. May be innacurate occurance date
 
 05 20 26
 -23.31
 Staples
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 Business Cards. May be innacurate occurance date
 
 05 20 26 05 21 26
@@ -179,14 +179,14 @@ Ice cream :)
 -14.32
 Jerusalem Garden
 ProfessionalExpense Restaurant
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 Meal with undergrads! REALLY GOOD
 
 05 19 26 05 21 26
 -1.5
 Masabi
 ProfessionalExpense transportation
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 Michigan Bus to staples
 
 05 26 26 05 27 26
@@ -200,21 +200,21 @@ PNC_SPEND
 -7.41
 Staples
 ProfessionalExpense LearningSupplies
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 g2 colored pens 
 
 05 22 26 05 26 26
 -4.89
 DTW airport
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 water from Harnonie Public Market in the DTW airport
 
 05 30 26
 -19
 ShadowLand
 Entertainment
-Cash
+CASH
 NA
 
 05 30 26
@@ -242,13 +242,265 @@ guiness during Emo night
 -7.63
 Midnight Oil
 ProfessionalExpense
-PNC_SPEND
+PNC_SPEND Budget_ProfessionalExpense
 NA
 
-06 02 26
-250
-Budget
-Budget
-s
+06 10 26
+500
+PNC_SPEND
+Transfer
+CASH
+on-hand CASH
 
+06 10 26
+20
+Dad
+Gift_Give
+CASH Budget_ProfessionalExpense
+from gambling
+
+05 04 26 05 05 26
+-37.2
+Tao Nightclub
+Entertainment
+PNC_SPEND
+enterance fee
+
+05 06 26 05 08 26
+-43.54
+Luxor
+Entertainment
+PNC_SPEND
+na
+
+06 11 26
+61309.78
+Start
+Start
+PNC_GROWTH
+starting
+
+06 11 26
+3245.78
+Start
+Start
+PNC_SPEND
+starting
+
+06 13 26
+-1
+ReUzit
+Charity
+CASH Budget_Fun
+donation. thought it was a tip 
+
+06 14 26
+-5
+Evan Perplexed
+Entertainment
+CASH Budget_Fun
+Evan gave me wine so I said id get him alc, but mission failed, so I gave him $5 instead
+
+06 13 26
+-10
+Ellaina
+Entertainment Gas
+CASH Budget_Fun
+Gas money
+
+06 13 26
+-4
+People
+Entertainment Arcade
+CASH Budget_Fun
+Gave money to people for them to scan their card. IDK if 4 is accurage
+
+06 10 26
+-12.49
+CVS
+Fashion
+PNC_SPEND Budget_ProfessionalExpense
+Sunscreen
+
+06 10 26
+-3.19
+CVS
+ProfessionalExpense EnergyDrink
+PNC_SPEND Budget_ProfessionalExpense
+Monster
+
+06 10 26
+-1.41
+PA
+Taxes
+PNC_SPEND Budget_Fun
+6% sales tax CVS
+
+06 10 26
+-12.49
+CVS
+Fashion
+PNC_SPEND Budget_Helpers
+Makeup Wipes
+
+06 13 26
+-26.94
+ReUzit
+Fashion
+PNC_SPEND Budget_Helpers
+Necklaces Ephrata ReUzit
+
+06 13 26
+-1.2
+PA
+Taxes
+PNC_SPEND Budget_Helpers
+NA
+
+06 10 26
+-3.38
+CVS
+EnergyDrink
+PNC_SPEND Budget_Fun
+Monster
+
+06 13 26
+-3.38
+CVS
+EnergyDrink
+PNC_SPEND Budget_Fun
+Monster
+
+06 13 26
+-2.99
+Round1
+Entertainment Restaurant
+PNC_SPEND Budget_Fun
+Bottle water
+
+06 13 26
+-31
+ReUzit
+Fashion Rings
+PNC_SPEND Budget_Helpers
+Rings
+
+06 13 26
+-1.86
+PA
+Taxes
+PNC_SPEND Budget_Helpers
+Tax from reuzit rings
+
+06 16 26
+-27.98
+Dick's Sporting Goods
+ProfessionalExpense
+PNC_SPEND Budget_ProfessionalExpense
+Swim ear plugs, swim goggles
+
+06 16 26
+-1.68
+PA
+Taxes
+PNC_SPEND Budget_ProfessionalExpense
+B
+
+06 16 26
+-16.77
+Target
+Hygene
+DISCOVER_CREDITCARD Budget_Hygene
+Q-tips, toothpaste
+
+06 16 26
+-9.29
+Target
+Health
+DISCOVER_CREDITCARD Budget_Helpers
+Earplugs
+
+06 16 26
+-0.56
+PA
+Taxes
+DISCOVER_CREDITCARD Budget_Helpers
+E
+
+06 17 26
+-2.99
+Sunoco
+Hygene
+DISCOVER_CREDITCARD Budget_Helpers
+Chapstick
+
+06 14 26 16 16 26
+-25
+Ellaina
+Entertainment Gas
+PNC_SPEND Budget_Fun
+Gas
+
+06 14 26 6 16 26
+-15.56
+McDonald's
+Entertainment Restaurant
+PNC_SPEND Budget_Fun
+d
+
+06 13 26 6 15 26
+-15
+El Capitan
+Entertainment Concert
+PNC_SPEND Budget_Fun
+Enterence Fee
+
+06 13 26 6 15 26
+-12
+RumpleStiltskin's Bar
+Entertainment Alcohol
+PNC_SPEND Budget_Fun
+Beers
+
+06 15 26
+-13.77
+Spotify
+Subscription
+PNC_SPEND Budget_Helpers
+h
+
+06 14 26 6 15 26
+-3.45
+Walmart
+Entertainment
+PNC_SPEND Budget_Fun
+squirt guns and water for concert
+
+06 12 26
+-15.89
+Amazon
+Subscription Waste
+PNC_SPEND Budget_Fun
+worthless amazon sub. need to cancel
+
+06 12 26
+-11.45
+Openrouter
+Entertainment
+PNC_SPEND Budget_Fun
+h
+
+06 17 26
+45.3
+Correction
+Correction
+PNC_SPEND 
+correction. more money in actual account so not worried haha
+
+06 19 26
+-27.97
+PA
+Entertainment Fishing
+DISCOVER_CREDITCARD Budget_Fun
+Annual Fishing License
 
