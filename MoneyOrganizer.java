@@ -111,7 +111,7 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
     }
 
 
-    public Set<String> getTags()
+    public Set<String> getTags(int[] startDate, int[] endDate)
     {
         Set<String> output = new TreeSet<>();
 
@@ -128,7 +128,7 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
     {
         return stringOfTransactions(getTransactionsFromTag(tag));
     }
-    public double getTotalFromTag(String tag)
+    public double getTotalInTags(String tag, int[] startDate, int[] endDate)
     {
         double output=0;
         for(Transaction transaction: theSet)
@@ -153,25 +153,28 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
     
 
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=LOCATIONS+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-    public Set<String> getLocations(int[] date)
+    public Set<String> getLocations(int[] startDate, int[] endDate)
     {
         Set<String> output = new TreeSet<>();
 
         for(Transaction transaction: theSet)
         {
-            if(dateCompareTo(date, transaction.date)<0)
+            if(dateCompareTo(endDate, transaction.date)<0)
                 break;
-            output.add(transaction.location);
+            if(dateCompareTo(startDate, transaction.date)<=0)
+                output.add(transaction.location);
         }
         return output;
     }
 
-    public double getTotalInLocation(String location)
+    public double getTotalInLocations(String location, int[] startDate, int[] endDate)
     {
         double output=0;
         for(Transaction transaction: theSet)
         {
-            if(transaction.location.equals(location))
+            if(dateCompareTo(endDate, transaction.date)<0)
+                break;
+            if(transaction.location.equals(location)&&dateCompareTo(startDate, transaction.date)<=0)
                 output+=transaction.cost;
         }
         return output;
@@ -186,7 +189,7 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
         return output;
     }
-    public double getTotalFromOrigin(String origin)
+    public double getTotalInOrigins(String origin)
     {
         double output=0;
         for(Transaction transaction: theSet)

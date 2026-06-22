@@ -20,104 +20,53 @@ public class FinanceMain //moneyOrganizer
      static Graph theGraph;
     final public static String INFO_FILE_NAME="FinanceInfo.txt";
     final public static String SPECIALCASES="SpecialCases.txt";
+    final private static int[] NOENDDATE={Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE};
+    final private static int[] NOSTARTDATE={-1,-1,-1};
     //debuggers
     static boolean debug=true;
     static boolean debugDetail=false;
-    public static void main(String[] args) 
+    public static void main(String[] args) throws Exception
     {
         if(debug)
             System.err.println("DEBUG ON \nSTARTING MAIN");
 
         
-       try{ moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME),readSpecial(SPECIALCASES));}
-       catch(FileNotFoundException e){System.err.println("FILE NOT FOUND"); System.exit(0);}
-        initializeOptions();
-        String op = theGraph.read();
-        int x;
-        String option;
-        char[] charArray = op.toCharArray();
-        for(int index=0; index<op.length();index++)
-        {
-            if(!Character.isDigit(charArray[index]))
-            {
-                option=op.substring(index);
-            }
-        }
-
-        if(op.contains("explore"))
-        {
-            option="explore";
-        }
-        else if(op.contains("get transactions"))
-        {
-            option = "get transactions";
-        }
-        else if(op.contains("budgeting"))
-        {
-            option = "budgeting";
-        }
-        else
-            option="root";
-
-        x=Integer.valueOf(op.substring(0, op.indexOf(option)));
-        switch (option) {
-            case "root":
-                break;
-            case "explore":
-                switch (x) {
-                    case 1:
-                        Set<String> mainTags = moneyOrganizer.getMainTags();
-                        double percent;
-                        for(String tag: mainTags)
-                        {
-                            percent = (moneyOrganizer.getTotalFromTag(tag));
-                            System.out.println(tag+" "+moneyOrganizer.getTotalFromTag(tag)+"");
-                        }
-                        askSortByCost(mainTags, 0);
-                            
-                        break;
-                    case 2:
-                        Set<String> tags = moneyOrganizer.getTags();
-                        for(String tag: tags)
-                            System.out.println(tag+" "+moneyOrganizer.getTotalFromTag(tag));
-                        askSortByCost(tags, 0);
-                        break;
-                    case 3:
-                        Set<String> locations = moneyOrganizer.getLocations();
-                        for(String location: locations)
-                            System.out.println(location+" "+moneyOrganizer.getTotalInLocation(location));
-                        askSortByCost(locations, 1);
-                        break;
-                    case 4:
-                        Set<String> origins = moneyOrganizer.getOrigins();
-                        for(String origin: origins)
-                            System.out.println(origin+" "+moneyOrganizer.getTotalFromOrigin(origin));
-                        askSortByCost(origins, 2);
-                        break;
-                    case 5: //print ALL transactions
-                        System.out.println(moneyOrganizer.stringOfTransactions());
-                        break;
-                    default:
-                        throw new AssertionError();
-                }
-
-                break;
-            case "get transactions":
-
-                break;
-            case "budgeting":
-                switch (x) {
-                    case 1: //print all budgets and values
-                        for(String budget: moneyOrganizer.getBudgets())
-                        {
-                            System.out.println(budget+" value is "+ moneyOrganizer.getBudgetTotal(budget));
-                        }
-                        break;
-                }
-        }
-            
-        //.contains then switch could work?
+        moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME),null);
+        initializeOptions(); //does what the method says
+        theGraph.read(); //everything should run in the graph, so stop here
     }
+
+    /**
+     * 
+     * @param whichToDo Locations, Tags, etc
+     * @param startDate inclusive start date
+     * @param endDate inclusive end date
+     * @purpose to print out name and price of tags, locations, etc in the Money Organizer as one concise method
+     * @throws Exception 
+     */
+    public static void printSummary(String whichToDo, int[] startDate, int[] endDate) throws Exception
+    {
+        Method totalInMethod = moneyOrganizer.getClass().getMethod("getTotalIn"+whichToDo,String.class,int[].class,int[].class);
+        Method getMethod = moneyOrganizer.getClass().getMethod("get"+whichToDo,int[].class,int[].class);
+        TreeSet<String> stringSet = (TreeSet<String>) getMethod.invoke(moneyOrganizer,startDate,endDate);
+
+        for(String str:stringSet)
+        {
+            System.out.println(str+" has $"+totalInMethod.invoke(moneyOrganizer, str,startDate,endDate));
+        }
+        //totalInMethod.invoke(moneyOrganizer,startDate,endDate);
+    }
+    public static void printLocations()throws Exception
+    {
+        printSummary("Locations", NOSTARTDATE, NOENDDATE);
+    }
+    public static void printTags()throws Exception
+    {
+        printSummary("Tags", NOSTARTDATE, NOENDDATE);
+    }
+    /**
+     * @purpose: Simple transaction when sorting by cost and printing statements
+     */
     private static class SimpleTransaction implements Comparable<SimpleTransaction>
     {
         Double cost;
@@ -136,20 +85,26 @@ public class FinanceMain //moneyOrganizer
             return this.label+" "+this.cost;
         }
     }
-    private static void initializeOptions()
+    /**
+     * @purpose: Sets up the graph, which will activate the methods and go down the dialogue tree
+     */
+    private static void initializeOptions() throws Exception
     {
         if(debug)
             System.err.println("INITIALIZE STARTED");
-        theGraph= new Graph("1. EXPLORE\n2. GET TRANSACTIONS\n3. BUDGETING");
+        theGraph= new Graph("1. EXPLORE\n2. BUDGETING");
 
-        String printThis="1. PRINT MAINTAGS\n2. PRINT ALL TAGS\n3. PRINT LOCATIONS\n4. PRINT ORIGINS";
+        String printThis="1. LOCATIONS\n2. PRINT TAGS";
         theGraph.addNode("explore", printThis, "root");
-        theGraph.addNode("get transactions", printThis, "root");
-        printThis = "1. PRINT BUDGET TYPES\n2. FUN BUDGET\n3. GET PROFESSIONAL EXPENSE BUDGET";
-        theGraph.addNode("budgeting", printThis, "root");
+        theGraph.addInvokingNode("exploreLocations","printLocations","explore");
+        theGraph.addInvokingNode("exploreTags","printTags","explore");
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
     }
+    /**
+     * @purpose: To serve as a backbone to the system and dialogue
+     * @possibleImprovements: Not have dialogue use memory when going back (keeps in stack when it doesn't have to)
+     */
     private static class Graph
     {
         final String FIRSTLINE = "\n\nCHOOSE AN OPTION\n";
@@ -160,75 +115,73 @@ public class FinanceMain //moneyOrganizer
         {
             root = new Node("root",printOut,null);
         }
-        public void addNode(String nodeName, String printOutNode, String parentNode)
+        public void addNode(String nodeName, String printOutNode, String parentNode) throws Exception
         {
             search(parentNode).addChild(nodeName, printOutNode);
+            for(Node node: root.children)
+                System.out.println("Root has Child "+node.name);
+        }
+        public void addInvokingNode(String nodeName, String methodName, String parentNode) throws Exception
+        {
+            search(parentNode).addInvokingChild(nodeName, methodName);
         }
         private void printOut(Node node)
         {
             System.out.print(FIRSTLINE+node+LASTLINE); 
         }
-
-
-
-        private Node search(String name)
+        private Node search(String name) throws Exception
         {
             return searchHelper(name, root);
         }
-        private Node searchHelper(String nameGoal, Node curNode)
+        private Node searchHelper(String nameGoal, Node curNode) throws Exception
         {
             if(curNode.name.equals(nameGoal))
                 return curNode;
             for(Node child: curNode.children)
             {
-                searchHelper(nameGoal,child);
+                return searchHelper(nameGoal,child);
             }
-            return null;
+            throw new NullPointerException("Node "+nameGoal+" not found");
         }
-        public String read()
+        public void read() throws Exception
         {
-            return read(root);
+            read(root);
         }
-        public String read(Node node)
+        public void read(Node node) throws Exception
             {
                 printOut(node);
-                int x=0;
                 Scanner scanner=new Scanner(System.in);
-                try{x= scanner.nextInt();} //error here?
-                catch(InputMismatchException e)
-                {
-                    System.out.println("PLEASE ENTER AN ACCEPTED VALUE");
-                    return read(node);
+                if(node.methodName!=null)
+                    node.invoke();
+                int x = scanner.nextInt();
+                switch (x) {
+                    case 0:
+                        System.out.println("EXITING PROGRAM");
+                        System.exit(0);
+                        break;
+                    case -1:
+                        read(node.parent);
+                        break;
+                    default:
+                        read(node.children.get(x-1));
                 }
-                //if choose branching option
-                if(x==0)
-                {
-                    System.out.print("ENDING PROGRAM");
-                    System.exit(0);
-                    return "";
-                }
-                else if(x==-1)
-                {
-                    return read(node.parent);
-                }
-                else if(node.children.size()>=x)
-                {
-                    return read(node.children.get(x-1));
-                }
-                else
-                {
-                    return x+node.name;
-                }
+
             }
         private class Node
         {
             String name;
-            String printOut;
+            String printOut="";
             LinkedList<Node> children;
             Node parent;
-            String methodName;// Which method to call at runtime
+            String methodName;// Which method to invoke at runtime
+            String methodParam; //Optional param for method to be invoked
 
-
+            /**
+             * @param name Name of node
+             * @param printOut String of children and options
+             * @param parent Node of parent
+             * @apiNote for non-leaf nodes
+             */
             public Node(String name, String printOut, Node parent)
             {
                 this.name=name;
@@ -236,30 +189,54 @@ public class FinanceMain //moneyOrganizer
                 this.parent=parent;
                 children=new LinkedList<>();
             }
-            public Node(String name, String printOut, Node parent, String methodName)
+            /**
+             * @param name Name of node
+             * @param parent Node of parent
+             * @param methodName name of method to invoke
+             * @apiNote for leaf nodes
+             */
+            public Node(String name, Node parent, String methodName)
             {
                 this.name=name;
-                this.printOut=printOut;
                 this.parent=parent;
-                children=new LinkedList<>();
                 this.methodName=methodName;
+            }
+            /**
+             * @param name Name of node
+             * @param parent Node of parent
+             * @param methodName name of method to invoke
+             * @param methodParam param for method to be invoked
+             * @apiNote for leaf nodes
+             */
+            public Node(String name, Node parent, String methodName, String methodParam)
+            {
+                this.name=name;
+                this.parent=parent;
+                this.methodName=methodName;
+                this.methodParam=methodParam;
             }
             public void addChild(String name, String printOut)
             {
                 children.add(new Node(name, printOut,this));
+            }
+            public void addInvokingChild(String name, String methodName)
+            {
+                children.add(new Node(name, this, methodName));
             }
             public String toString()
             {
                 return printOut;
             }
             /**
-             * does a method. usually prints something out
+             * @purpose invokes a method. usually prints something out
              */
-            public void activate() throws Exception
+            public void invoke() throws Exception
             {
                 FinanceMain obj = new FinanceMain();
-                Method m = FinanceMain.class.getMethod(methodName);
-                m.invoke(null);
+                Method m;
+                try{m = FinanceMain.class.getMethod(methodName);}
+                catch (NoSuchMethodException e){throw new NoSuchMethodException("Method "+methodName+" not found in FinanceMain.class");} //error here
+                m.invoke(obj);
             }
         }
     }
@@ -347,25 +324,6 @@ public class FinanceMain //moneyOrganizer
         scanner.close();
         return transactionSet;
     }
-
-    static Set<String> readSpecial(String fileName) throws FileNotFoundException
-    {
-        Set<String> output=new HashSet<String>();
-        File file = new File(fileName);
-        Scanner scanner;
-        try {scanner= new Scanner(file);}
-        catch (Exception e) { throw new FileNotFoundException("Special file not found");}
-
-        while(true)
-        {
-            if(scanner.nextLine().equals("SPEND BUDGET"))
-                break;
-        }
-        while(scanner.hasNextLine())
-            output.add(scanner.nextLine());
-        scanner.close();
-        return output;        
-    }
     /**
      * @param set set of tags,locations, or origins
      * @param x 0 for tag, 1 for location, 2 for origin
@@ -397,13 +355,13 @@ public class FinanceMain //moneyOrganizer
         {
             switch (x) {
                 case 0:
-                    output.add(new SimpleTransaction(moneyOrganizer.getTotalFromTag(string), string));
+   //                 output.add(new SimpleTransaction(moneyOrganizer.getTotalInTags(string), string));
                     break;
                 case 1:
-                    output.add(new SimpleTransaction(moneyOrganizer.getTotalInLocation(string), string));
+   //                 output.add(new SimpleTransaction(moneyOrganizer.getTotalInLocation(string), string));
                     break;
                 case 2:
-                    output.add(new SimpleTransaction(moneyOrganizer.getTotalFromOrigin(string), string));
+                    output.add(new SimpleTransaction(moneyOrganizer.getTotalInOrigins(string), string));
                     break;
                 default:
                     throw new AssertionError();

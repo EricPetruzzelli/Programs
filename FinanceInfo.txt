@@ -504,3 +504,55 @@ Entertainment Fishing
 DISCOVER_CREDITCARD Budget_Fun
 Annual Fishing License
 
+06 20 26
+-20
+Phantom Power
+Entertainment Concert
+CASH Budget_Fun
+enterance
+
+06 20 26
+-5
+Phantom Power
+Entertainment Parking
+CASH Budget_Fun
+parking
+
+06 20 26
+-8.21
+Giant
+Medicine
+DISCOVER_CREDITCARD Budget_Medicine
+adderall
+
+06 20 26
+-7.99
+Dick's
+ProfessionalExpense LostItemBuyback
+DISCOVER_CREDITCARD Budget_Helpers
+ear plugs
+
+06 20 26
+-0.48
+PA
+ProfessionalExpense LostItemBuyback Taxes
+DISCOVER_CREDITCARD Budget_Helpers
+ear plugs
+
+06 20 26
+-18.52
+Lyndon Diner
+Entertainment Restaurant
+DISCOVER_CREDITCARD Budget_Fun
+NA
+
+06 17 26
+-15
+Planet Fitness
+Subscription Fitness
+PNC_SPEND Budget_Helpers
+NA
+
+
+
+
