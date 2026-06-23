@@ -1,10 +1,10 @@
 import java.io.File;
 import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 public class FinanceMain //moneyOrganizer
 {
@@ -16,8 +16,8 @@ public class FinanceMain //moneyOrganizer
     final private static int[] NOSTARTDATE={-1,-1,-1};
     //debuggers
     static boolean debug=true;
-    static boolean debugDetail=false;
-    static boolean debugTemp=false;
+    static boolean debugPrintEachTransaction=true;
+    static boolean debugPrintTransactionList=false;
     public static void main(String[] args) throws Exception
     {
         if(debug)
@@ -256,9 +256,9 @@ public class FinanceMain //moneyOrganizer
             }
         }
     }
-    static SortedSet<Transaction> ReadInfo(String fileName)
+    static ArrayList<Transaction> ReadInfo(String fileName)
     {
-        SortedSet<Transaction> transactionSet = new TreeSet<Transaction>();
+        ArrayList<Transaction> transactionSet = new ArrayList<Transaction>();
         int[] curOcDate=new int[3];
         int[] curDate=new int[3];
         Double curCost;
@@ -329,15 +329,16 @@ public class FinanceMain //moneyOrganizer
 
             curDescription= scanner.nextLine();
             curTransaction=new Transaction(curOcDate,curDate, curCost, curOrigin, tags, curActualLocation, curDescription, curBudget);
-           if(debugDetail)
+           if(debugPrintEachTransaction)
            {
             System.err.println(curTransaction+"\n");
            }
-            transactionSet.add(curTransaction);
+            transactionSet.add(curTransaction); //issue must be here??????? wtf whywhywhwhywhywhywhywhywhywhywhywhywhy
         }
-        if(debugTemp)
+        if(debugPrintTransactionList)
         {
             System.err.println("PRINTING TRANSACTIONS IN READ METHOD A1");
+            Collections.sort(transactionSet);
             for(Transaction trans: transactionSet)
                 System.out.println(trans);
         }

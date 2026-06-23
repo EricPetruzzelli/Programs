@@ -1,7 +1,8 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 public class MoneyOrganizer 
 {
@@ -9,11 +10,12 @@ public class MoneyOrganizer
     final int YEAREND=27;
     TransactionCalander budgetCal;
     TransactionCalander locationCal;
-    final private SortedSet<Transaction> theSet;
+    final private ArrayList<Transaction> theSet;
 
-    public MoneyOrganizer(SortedSet<Transaction> transactionSet)
+    public MoneyOrganizer(ArrayList<Transaction> transactionSet)
     {
         theSet=transactionSet;
+        Collections.sort(theSet);
         budgetCal=new TransactionCalander(true);
         locationCal=new TransactionCalander(false);
         for(Transaction transaction: theSet)
@@ -60,6 +62,7 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
     return output;
 }
+
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=GENERAL+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
     public double getTotal()
     {

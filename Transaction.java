@@ -47,7 +47,7 @@ public class Transaction implements Comparable<Transaction>
         return arg[1] + " "+arg[2]+" "+ arg[0];
     }
     @Override
-    public int compareTo(Transaction other) //year month day format
+    public int compareTo(Transaction other) //year month day format 
     {
         return (OcDate[0]-other.OcDate[0])*360+(OcDate[1]-other.OcDate[1]*31+(OcDate[2]-other.OcDate[2]));
     }
