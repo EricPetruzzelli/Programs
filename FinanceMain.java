@@ -16,7 +16,7 @@ public class FinanceMain //moneyOrganizer
     final private static int[] NOSTARTDATE={-1,-1,-1};
     //debuggers
     static boolean debug=true;
-    static boolean debugPrintEachTransaction=true;
+    static boolean debugPrintEachTransaction=false;
     static boolean debugPrintTransactionList=false;
     public static void main(String[] args) throws Exception
     {
@@ -348,8 +348,6 @@ public class FinanceMain //moneyOrganizer
             System.out.println("COMPLETED READINFO");
         scanner.close();
 
-        System.err.println("TESTING OUT");
-        System.err.println(transactionSet.get(1));
         return transactionSet;
     }
     /**

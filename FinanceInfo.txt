@@ -434,7 +434,7 @@ Hygene
 DISCOVER_CREDITCARD Budget_Helpers
 Chapstick
 
-06 14 26 16 16 26
+06 14 26 6 16 26
 -25
 Ellaina
 Entertainment Gas

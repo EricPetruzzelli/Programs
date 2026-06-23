@@ -231,7 +231,12 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
             date[1]=date[1]-1;
             date[2]=date[2]-1; //reduce by one so fits into 12 system (so january is 00)
             int yearIndex = date[0]-YEARSTART;
-            calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);
+            try{calander.get(yearIndex).get(date[1]).get(date[2]).add(transaction);}
+            catch(Exception e){
+                System.err.println("FATAL ERROR WHEN ADDING TRANSACTION");
+                System.err.println(transaction);
+                throw e;
+            } //error here
         }
 
         
