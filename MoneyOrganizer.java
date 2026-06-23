@@ -10,12 +10,10 @@ public class MoneyOrganizer
     TransactionCalander budgetCal;
     TransactionCalander locationCal;
     final private SortedSet<Transaction> theSet;
-    final private Set<String> budgetExeptions;
 
-    public MoneyOrganizer(SortedSet<Transaction> transactionSet, Set<String> budgetExeptions)
+    public MoneyOrganizer(SortedSet<Transaction> transactionSet)
     {
         theSet=transactionSet;
-        this.budgetExeptions=budgetExeptions;
         budgetCal=new TransactionCalander(true);
         locationCal=new TransactionCalander(false);
         for(Transaction transaction: theSet)
@@ -25,7 +23,6 @@ public class MoneyOrganizer
         }
     }
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+BUDGET+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
 public Double getBudgetTotal(String targetBudget)
 {
     Double output=0.0;
@@ -53,7 +50,6 @@ public String stringOfTransactionsFromBudget(String budget)
 {
     return stringOfTransactions(getTransactionsFromBudget(budget));
 }
-
 private Set<Transaction> getTransactionsFromBudget(String budget)
 {
     Set<Transaction> output =new HashSet<>();
@@ -64,9 +60,7 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
     return output;
 }
-
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=GENERAL+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
     public double getTotal()
     {
         double output=0;
@@ -97,7 +91,10 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
         return output.substring(0,output.length()-2);
     }
-
+     public void printAllTransactions()
+    {
+        System.out.print(this.stringOfTransactions());
+    }
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=TAGS+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
     public Set<String> getMainTags()
     {
@@ -109,8 +106,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         return output;
 
     }
-
-
     public Set<String> getTags(int[] startDate, int[] endDate)
     {
         Set<String> output = new TreeSet<>();
@@ -138,7 +133,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
         return output;
     }
-    
     private Set<Transaction> getTransactionsFromTag(String tag)
     {
         Set<Transaction> output =new HashSet<>();
@@ -149,9 +143,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
         return output;
     }
-    
-    
-
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=LOCATIONS+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
     public Set<String> getLocations(int[] startDate, int[] endDate)
     {
@@ -166,7 +157,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
         return output;
     }
-
     public double getTotalInLocations(String location, int[] startDate, int[] endDate)
     {
         double output=0;
@@ -199,13 +189,11 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
         return output;
     }
-
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=CALANDER+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
     private int dateCompareTo(int[] dateOne, int[] dateTwo)
     {
         return (dateOne[0]-dateTwo[0])*365+(dateOne[1]-dateTwo[1])*31+(dateOne[2]-dateTwo[2]);
     }
-
     private class TransactionCalander
     {
         //each date will be an arraylist of arraylists of arraylists of sets (YY/MM/DD)
@@ -233,7 +221,7 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         {//year month day format
             int[] date;
             if(useOcDate)
-                date=transaction.OcDate.clone();
+                date=transaction.getOcDate();
             else
                 date=transaction.date.clone();
 
@@ -245,7 +233,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
 
         
     }
-
 }
 
 

@@ -1,14 +1,11 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.TreeSet;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.lang.reflect.*;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 public class FinanceMain //moneyOrganizer
 {
      static MoneyOrganizer moneyOrganizer;
@@ -20,51 +17,61 @@ public class FinanceMain //moneyOrganizer
     //debuggers
     static boolean debug=true;
     static boolean debugDetail=false;
+    static boolean debugTemp=false;
     public static void main(String[] args) throws Exception
     {
         if(debug)
             System.err.println("DEBUG ON \nSTARTING MAIN");
-        moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME),null);
+        moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME));
         initializeOptions(); //does what the method says
         theGraph.read(); //everything should run in the graph, so stop here
     }
-   /** @param whichToDo Locations, Tags, etc
-     * @purpose to print out name and price of tags, locations, etc in the Money Organizer as one concise method
-     * @asksFor Start date and End date
-     * @throws Exception */
-    public static void printSummary(String whichToDo) throws Exception
+    private static int[][] askForDates()
     {
-        int[] startDate=new int[3];
-        int[] endDate=new int[3];
+        int[][] output=new int[2][3];
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Start date (mm dd yy)? (Press 'enter' for none)");
         
         Scanner nxtLine = new Scanner(scanner.nextLine());
         if(!nxtLine.hasNext())
-            startDate = NOSTARTDATE;
+            output[0] = NOSTARTDATE;
         else
         {
-            startDate[1]=nxtLine.nextInt();
-            startDate[2]=nxtLine.nextInt();
-            startDate[0]=nxtLine.nextInt();
+            output[0][1]=nxtLine.nextInt();
+            output[0][2]=nxtLine.nextInt();
+            output[0][0]=nxtLine.nextInt();
         }
         System.out.println("End date (mm dd yy)? (Press 'enter' for none)");
         nxtLine = new Scanner(scanner.nextLine());
         
         if(!nxtLine.hasNext())
-            endDate = NOENDDATE;
+            output[1] = NOENDDATE;
         else
         {
-            endDate[1]=nxtLine.nextInt();
-            endDate[2]=nxtLine.nextInt();
-            endDate[0]=nxtLine.nextInt();
-        }
-        nxtLine.close();
+            output[1][1]=nxtLine.nextInt();
+            output[1][2]=nxtLine.nextInt();
+            output[1][0]=nxtLine.nextInt();
+        }        
+        return output;
+    }
+   /** @param whichToDo Locations, Tags, etc
+     * @purpose to print out name and price of tags, locations, etc in the Money Organizer as one concise method
+     * @asksFor Start date and End date
+     * @throws Exception */
+    @SuppressWarnings("unchecked")
+    public static void printSummary(String whichToDo) throws Exception
+    {
+        int[][] dates = askForDates();
+        int[] startDate=dates[0];
+        int[] endDate=dates[1];
         Method totalInMethod = moneyOrganizer.getClass().getMethod("getTotalIn"+whichToDo,String.class,int[].class,int[].class);
         Method getMethod = moneyOrganizer.getClass().getMethod("get"+whichToDo,int[].class,int[].class);
-        TreeSet<String> stringSet = (TreeSet<String>) getMethod.invoke(moneyOrganizer,startDate,endDate);
+       // Set<String> stringSet = (Set<String>) getMethod.invoke(moneyOrganizer,startDate,endDate); //error here
 
-        for(String str:stringSet)
+        Set<String> stringSet = moneyOrganizer.getLocations(startDate, endDate);
+
+        for(String str:stringSet) //size = 0? (NOT RIGHT)
         {
             System.out.println(str+" has $"+totalInMethod.invoke(moneyOrganizer, str,startDate,endDate));
         }
@@ -93,7 +100,6 @@ public class FinanceMain //moneyOrganizer
         theGraph.addInvokingNode("exploreTags","printTags","explore");
 
         
-
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
     }
@@ -113,8 +119,6 @@ public class FinanceMain //moneyOrganizer
         public void addNode(String nodeName, String printOutNode, String parentNode) throws Exception
         {
             search(parentNode).addChild(nodeName, printOutNode);
-            for(Node node: root.children)
-                System.out.println("Root has Child "+node.name);
         }
         public void addInvokingNode(String nodeName, String methodName, String parentNode) throws Exception
         {
@@ -330,6 +334,12 @@ public class FinanceMain //moneyOrganizer
             System.err.println(curTransaction+"\n");
            }
             transactionSet.add(curTransaction);
+        }
+        if(debugTemp)
+        {
+            System.err.println("PRINTING TRANSACTIONS IN READ METHOD A1");
+            for(Transaction trans: transactionSet)
+                System.out.println(trans);
         }
         if(debug)
             System.out.println("COMPLETED READINFO");

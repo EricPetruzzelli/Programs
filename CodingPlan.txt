@@ -1,19 +1,4 @@
-PLAN:
+debugging 06 23 26
 
-hava dates as a 3D arraylist (one for year, one for month, one for day) which would be a list of transactions per day?
-cons: horrible for storage and initiation
-
-pros: O(1) runtime for date retrieval 
-
-
-have dates as an ADT:
-
-cons: 
-
-pros: good for storage possibly
-
-STUFF TO ADD:
-1.
-    add all costs
-2.
-3.
+PERFECTLY NORMAL BEFORE ADDING TO TREESET
+WEIRD AFTER ADDING TO TREESET IN READINFO METHOD IN FINANCEMAIN

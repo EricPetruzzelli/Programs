@@ -2,7 +2,7 @@ import java.util.ArrayList;
 public class Transaction implements Comparable<Transaction>
 {
     public int[] date= new int[3];
-    public int[] OcDate= new int[3];
+    private int[] OcDate= new int[3];
     public double cost;
     public String typeOrigin;
     public ArrayList<String> tags;
@@ -35,6 +35,10 @@ public class Transaction implements Comparable<Transaction>
     {
         String[] arg = tags.toArray(new String[0]);
         return printDate(OcDate) +"\n"+printDate(date) +"\n"+cost+"\n"+typeOrigin+"\n"+Printables.printArrayList(tags)+"\n"+location+"\n"+description+"\n"+budget;
+    }
+    public int[] getOcDate()
+    {
+        return OcDate.clone();
     }
 
 

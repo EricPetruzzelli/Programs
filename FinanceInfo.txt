@@ -494,7 +494,7 @@ h
 45.3
 Correction
 Correction
-PNC_SPEND 
+PNC_SPEND
 correction. more money in actual account so not worried haha
 
 06 19 26
