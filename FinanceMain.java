@@ -11,11 +11,6 @@ import java.lang.reflect.*;
 import java.util.SortedSet;
 public class FinanceMain //moneyOrganizer
 {
-    //SEVERAL HASHMAP OF SORTED SETS OF TRANSACTIONS!!!
-
-
-
-
      static MoneyOrganizer moneyOrganizer;
      static Graph theGraph;
     final public static String INFO_FILE_NAME="FinanceInfo.txt";
@@ -29,23 +24,42 @@ public class FinanceMain //moneyOrganizer
     {
         if(debug)
             System.err.println("DEBUG ON \nSTARTING MAIN");
-
-        
         moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME),null);
         initializeOptions(); //does what the method says
         theGraph.read(); //everything should run in the graph, so stop here
     }
-
-    /**
-     * 
-     * @param whichToDo Locations, Tags, etc
-     * @param startDate inclusive start date
-     * @param endDate inclusive end date
+   /** @param whichToDo Locations, Tags, etc
      * @purpose to print out name and price of tags, locations, etc in the Money Organizer as one concise method
-     * @throws Exception 
-     */
-    public static void printSummary(String whichToDo, int[] startDate, int[] endDate) throws Exception
+     * @asksFor Start date and End date
+     * @throws Exception */
+    public static void printSummary(String whichToDo) throws Exception
     {
+        int[] startDate=new int[3];
+        int[] endDate=new int[3];
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Start date (mm dd yy)? (Press 'enter' for none)");
+        
+        Scanner nxtLine = new Scanner(scanner.nextLine());
+        if(!nxtLine.hasNext())
+            startDate = NOSTARTDATE;
+        else
+        {
+            startDate[1]=nxtLine.nextInt();
+            startDate[2]=nxtLine.nextInt();
+            startDate[0]=nxtLine.nextInt();
+        }
+        System.out.println("End date (mm dd yy)? (Press 'enter' for none)");
+        nxtLine = new Scanner(scanner.nextLine());
+        
+        if(!nxtLine.hasNext())
+            endDate = NOENDDATE;
+        else
+        {
+            endDate[1]=nxtLine.nextInt();
+            endDate[2]=nxtLine.nextInt();
+            endDate[0]=nxtLine.nextInt();
+        }
+        nxtLine.close();
         Method totalInMethod = moneyOrganizer.getClass().getMethod("getTotalIn"+whichToDo,String.class,int[].class,int[].class);
         Method getMethod = moneyOrganizer.getClass().getMethod("get"+whichToDo,int[].class,int[].class);
         TreeSet<String> stringSet = (TreeSet<String>) getMethod.invoke(moneyOrganizer,startDate,endDate);
@@ -54,37 +68,16 @@ public class FinanceMain //moneyOrganizer
         {
             System.out.println(str+" has $"+totalInMethod.invoke(moneyOrganizer, str,startDate,endDate));
         }
-        //totalInMethod.invoke(moneyOrganizer,startDate,endDate);
     }
     public static void printLocations()throws Exception
     {
-        printSummary("Locations", NOSTARTDATE, NOENDDATE);
+        printSummary("Locations");
     }
     public static void printTags()throws Exception
     {
-        printSummary("Tags", NOSTARTDATE, NOENDDATE);
+        printSummary("Tags");
     }
-    /**
-     * @purpose: Simple transaction when sorting by cost and printing statements
-     */
-    private static class SimpleTransaction implements Comparable<SimpleTransaction>
-    {
-        Double cost;
-        String label;
-        public SimpleTransaction(Double cost, String label)
-        {
-            this.cost=cost;
-            this.label=label;
-        }
-        public int compareTo(SimpleTransaction other)
-        {
-            return (int) (this.cost*100-other.cost*100);
-        }
-        public String toString()
-        {
-            return this.label+" "+this.cost;
-        }
-    }
+    
     /**
      * @purpose: Sets up the graph, which will activate the methods and go down the dialogue tree
      */
@@ -98,6 +91,9 @@ public class FinanceMain //moneyOrganizer
         theGraph.addNode("explore", printThis, "root");
         theGraph.addInvokingNode("exploreLocations","printLocations","explore");
         theGraph.addInvokingNode("exploreTags","printTags","explore");
+
+        
+
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
     }
@@ -110,7 +106,6 @@ public class FinanceMain //moneyOrganizer
         final String FIRSTLINE = "\n\nCHOOSE AN OPTION\n";
         final String LASTLINE = "\n0. END PROGRAM\n-1. GO BACK\n";
         final Node root;
-
         public Graph(String printOut)
         {
             root = new Node("root",printOut,null);
@@ -124,6 +119,10 @@ public class FinanceMain //moneyOrganizer
         public void addInvokingNode(String nodeName, String methodName, String parentNode) throws Exception
         {
             search(parentNode).addInvokingChild(nodeName, methodName);
+        }
+        public void addInvokingNode(String nodeName, String methodName,String methodParam, String parentNode) throws Exception
+        {
+            search(parentNode).addInvokingChild(nodeName, methodName,methodParam);
         }
         private void printOut(Node node)
         {
@@ -223,6 +222,10 @@ public class FinanceMain //moneyOrganizer
             {
                 children.add(new Node(name, this, methodName));
             }
+            public void addInvokingChild(String name, String methodName, String methodParam)
+            {
+                children.add(new Node(name, this, methodName,methodParam));
+            }
             public String toString()
             {
                 return printOut;
@@ -230,13 +233,22 @@ public class FinanceMain //moneyOrganizer
             /**
              * @purpose invokes a method. usually prints something out
              */
+            //Would most likely need to be fixed (find more elegant way than if/else statements)
             public void invoke() throws Exception
             {
                 FinanceMain obj = new FinanceMain();
                 Method m;
-                try{m = FinanceMain.class.getMethod(methodName);}
+                try{
+                        if(FinanceMain.class.getMethod(methodName).getParameterCount()>0)
+                            m = FinanceMain.class.getMethod(methodName, String.class);
+                        else
+                            m = FinanceMain.class.getMethod(methodName);
+                    }
                 catch (NoSuchMethodException e){throw new NoSuchMethodException("Method "+methodName+" not found in FinanceMain.class");} //error here
-                m.invoke(obj);
+                if(FinanceMain.class.getMethod(methodName).getParameterCount()>0)
+                    m.invoke(obj,methodParam);
+                else
+                    m.invoke(obj);
             }
         }
     }
@@ -368,5 +380,26 @@ public class FinanceMain //moneyOrganizer
             }
         }
         return output;
+    }
+    /**
+     * @purpose: Simple transaction when sorting by cost and printing statements
+     */
+    private static class SimpleTransaction implements Comparable<SimpleTransaction>
+    {
+        Double cost;
+        String label;
+        public SimpleTransaction(Double cost, String label)
+        {
+            this.cost=cost;
+            this.label=label;
+        }
+        public int compareTo(SimpleTransaction other)
+        {
+            return (int) (this.cost*100-other.cost*100);
+        }
+        public String toString()
+        {
+            return this.label+" "+this.cost;
+        }
     }
 }
