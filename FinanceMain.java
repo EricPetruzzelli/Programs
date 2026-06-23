@@ -286,6 +286,8 @@ public class FinanceMain //moneyOrganizer
         */
         while(scanner.hasNextInt())
         {
+            curOcDate=new int[3];
+            curDate=new int[3];
             //scans line for date(s)
 
             String nextLine=scanner.nextLine();
@@ -345,6 +347,9 @@ public class FinanceMain //moneyOrganizer
         if(debug)
             System.out.println("COMPLETED READINFO");
         scanner.close();
+
+        System.err.println("TESTING OUT");
+        System.err.println(transactionSet.get(1));
         return transactionSet;
     }
     /**

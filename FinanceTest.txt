@@ -1,0 +1,56 @@
+8 <- amount to skip
+Date occured   Date actual: (mmddyy) 00 00 0000 means unkown OR not occured (i.e. most common types)
+Cost:
+Place Origin: (CVS, Midnight Oil, etc )
+Tags: Main tag followed by sub-tags(Transfer, work, Fashion, rent, fun, etc)
+Actual Location or Transfer To or Budget Kind: (PNC_SPEND Budget_Fun, Budget_ProfessionalExpense, etc)
+Description: (nail polish, T-Shirt, Concert tickets, etc)
+
+5 11 26 
+11
+start
+work
+PNC_SPEND
+Starting Stuff
+
+05 01 26 
+823.63
+Pitt
+work
+PNC_SPEND
+NA
+
+05 07 26
+-143
+American Red Cross
+ProfessionalExpense
+PNC_SPEND Budget_ProfessionalExpense
+CPR certification. May be innacurate occurance date
+
+05 06 26 05 08 26
+-5
+LancasterCity
+ProfessionalExpense
+PNC_SPEND Budget_ProfessionalExpense
+May 06 2026 job fair LancasterCity
+
+05 12 26
+-15.89
+Amazon
+Subscription
+PNC_SPEND
+UNKNOWN! NEED TO CANCEL!!
+
+05 11 26 05 12 26 
+-5.29
+Staples
+ProfessionalExpense
+PNC_SPEND Budget_ProfessionalExpense
+Notebook for personal finance notes
+
+05 12 26
+-7.63
+Midnight Oil
+ProfessionalExpense Restaurant
+PNC_SPEND Budget_ProfessionalExpense
+may be innacurate occurance date
