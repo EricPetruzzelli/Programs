@@ -69,11 +69,9 @@ public class FinanceMain //moneyOrganizer
         int[] endDate=dates[1];
         Method totalInMethod = moneyOrganizer.getClass().getMethod("getTotalIn"+whichToDo,String.class,int[].class,int[].class);
         Method getMethod = moneyOrganizer.getClass().getMethod("get"+whichToDo,int[].class,int[].class);
-       // Set<String> stringSet = (Set<String>) getMethod.invoke(moneyOrganizer,startDate,endDate); //error here
+       Set<String> stringSet = (Set<String>) getMethod.invoke(moneyOrganizer,startDate,endDate); //error here
 
-        Set<String> stringSet = moneyOrganizer.getLocations(startDate, endDate);
-
-        for(String str:stringSet) //size = 0? (NOT RIGHT)
+        for(String str:stringSet)
         {
             System.out.println(str+" has $"+totalInMethod.invoke(moneyOrganizer, str,startDate,endDate));
         }
@@ -128,10 +126,6 @@ public class FinanceMain //moneyOrganizer
         public void addInvokingNode(String nodeName, String methodName, String parentNode) throws Exception
         {
             search(parentNode).addInvokingChild(nodeName, methodName);
-        }
-        public void addInvokingNode(String nodeName, String methodName,String methodParam, String parentNode) throws Exception
-        {
-            search(parentNode).addInvokingChild(nodeName, methodName,methodParam);
         }
         private void printOut(Node node)
         {
