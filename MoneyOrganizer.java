@@ -16,6 +16,7 @@ public class MoneyOrganizer
     {
         theSet=transactionSet;
         Collections.sort(theSet);
+        Collections.reverse(theSet);
         budgetCal=new TransactionCalander(true);
         locationCal=new TransactionCalander(false);
         for(Transaction transaction: theSet)
@@ -64,6 +65,10 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
 }
 
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=GENERAL+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+    public int getSize()
+    {
+        return theSet.size();
+    }
     public double getTotal()
     {
         double output=0;
@@ -150,11 +155,13 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
     public Set<String> getLocations(int[] startDate, int[] endDate)
     {
         Set<String> output = new TreeSet<>();
-
+        System.out.println("TESTING INDEX 0 IN SET");
+            System.out.println(theSet.get(0));
         for(Transaction transaction: theSet)
         {
+            
             if(dateCompareTo(endDate, transaction.date)<0)
-                break;
+                break; //breaks here for some reason???
             if(dateCompareTo(startDate, transaction.date)<=0)
                 output.add(transaction.location);
         }

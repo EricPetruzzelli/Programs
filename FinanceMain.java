@@ -21,8 +21,10 @@ public class FinanceMain //moneyOrganizer
     public static void main(String[] args) throws Exception
     {
         if(debug)
-            System.err.println("DEBUG ON \nSTARTING MAIN");
+            System.out.println("DEBUG ON \nSTARTING MAIN");
         moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME));
+        if(debug)
+            System.out.println(moneyOrganizer.getSize()+" transactions read");
         initializeOptions(); //does what the method says
         theGraph.read(); //everything should run in the graph, so stop here
     }
