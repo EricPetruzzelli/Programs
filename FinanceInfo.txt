@@ -553,6 +553,58 @@ Subscription Fitness
 PNC_SPEND Budget_Helpers
 NA
 
+6 22 26
+-30
+Lititz Rec Center
+Entertainment Swimming
+CASH Budget_Fun
+Paid for me+Ellaina 1 day indoor pool access
 
+6 22 26
+-5
+Ellaina
+Entertainment EnergyDrink
+CASH Budget_Fun
+Drank Ellaina's redbull and had to pay her back
 
+6 22 26
+-20
+Ellaina
+Entertainment Gas
+CASH Budget_Fun
+Ellaina Gas
 
+6 25 26
+-1
+A Stranger
+Charity
+CASH Budget_Helpers
+rando in parking lot wanted cash so gave her a dollar
+
+6 25 26
+-12.72
+Dick's Sporting Goods
+ProfessionalExpense Swimming
+DISCOVER_CREDITCARD Budget_ProfessionalExpense
+Swimming ear plugs
+
+6 25 26
+-33
+Walgreen's
+Waste
+PNC_SPEND Budget_Emergency
+Walgreen's waste of money
+
+6 24 26
+-6.54
+Knight and Day Diner
+Entertainment Restaurant
+DISCOVER_CREDITCARD Budget_Fun
+Milkshake after hiking in Potato Patch
+
+6 24 26
+-5
+PA
+Politics Parking
+DISCOVER_CREDITCARD Budget_Helpers
+parking to go to city hall AI meeting

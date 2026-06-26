@@ -26,10 +26,9 @@ public class MoneyOrganizer
         }
     }
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+BUDGET+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-public Double getBudgetTotal(String targetBudget)
+public Double getTotalInBudgets(String targetBudget,int[] startDate, int[] endDate)
 {
     Double output=0.0;
-
     for(Transaction transaction: theSet)
     {
         if(transaction.budget!=null&&transaction.budget.equals(targetBudget))
@@ -39,7 +38,7 @@ public Double getBudgetTotal(String targetBudget)
     }
     return output;
 }
-public Set<String> getBudgets()
+public Set<String> getBudgets(int[] startDate, int[] endDate)
 {
     Set<String> output = new TreeSet<>();
     for(Transaction transaction: theSet)
@@ -63,7 +62,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
         }
     return output;
 }
-
 //+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=GENERAL+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
     public int getSize()
     {
@@ -155,8 +153,6 @@ private Set<Transaction> getTransactionsFromBudget(String budget)
     public Set<String> getLocations(int[] startDate, int[] endDate)
     {
         Set<String> output = new TreeSet<>();
-        System.out.println("TESTING INDEX 0 IN SET");
-            System.out.println(theSet.get(0));
         for(Transaction transaction: theSet)
         {
             

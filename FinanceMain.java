@@ -24,7 +24,7 @@ public class FinanceMain //moneyOrganizer
             System.out.println("DEBUG ON \nSTARTING MAIN");
         moneyOrganizer=new MoneyOrganizer(ReadInfo(INFO_FILE_NAME));
         if(debug)
-            System.out.println(moneyOrganizer.getSize()+" transactions read");
+            System.out.println(moneyOrganizer.getSize()+" Transactions added");
         initializeOptions(); //does what the method says
         theGraph.read(); //everything should run in the graph, so stop here
     }
@@ -86,6 +86,10 @@ public class FinanceMain //moneyOrganizer
     {
         printSummary("Tags");
     }
+    public static void printBudgets() throws Exception
+    {
+        printSummary("Budgets");
+    }
     
     /**
      * @purpose: Sets up the graph, which will activate the methods and go down the dialogue tree
@@ -94,16 +98,15 @@ public class FinanceMain //moneyOrganizer
     {
         if(debug)
             System.err.println("INITIALIZE STARTED");
-        theGraph= new Graph("1. EXPLORE\n2. BUDGETING");
-
+        theGraph= new Graph("1. EXPLORE");
         String printThis="1. LOCATIONS\n2. PRINT TAGS";
         theGraph.addNode("explore", printThis, "root");
         theGraph.addInvokingNode("exploreLocations","printLocations","explore");
         theGraph.addInvokingNode("exploreTags","printTags","explore");
-
-        
+        theGraph.addInvokingNode("exploreBudgets","printBudgets","explore");
         if(debug)
             System.err.println("INITIALIZE COMPLETED");
+       
     }
     /**
      * @purpose: To serve as a backbone to the system and dialogue
